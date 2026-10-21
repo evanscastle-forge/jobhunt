@@ -1,0 +1,876 @@
+# Boards found by `jobhunt.py discover`. Generated -- edit config.toml instead.
+# Delete this file to reset discovery; the registry in data/companies.json remembers
+# what was already probed, so a re-run will not re-guess dead tokens.
+
+[[companies]]
+name = "10a Labs"
+ats = "greenhouse"
+board = "10alabs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Accenture Federal Services"
+ats = "greenhouse"
+board = "accenturefederalservices"
+profiles = ["engineer"]
+
+[[companies]]
+name = "ACT1 Federal"
+ats = "greenhouse"
+board = "act1federal"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Airspace "
+ats = "greenhouse"
+board = "airspace"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Allstate"
+ats = "workday"
+tenant = "allstate"
+wd = "wd5"
+site = "allstate_Careers"
+queries = ["machine learning", "artificial intelligence", "forward deployed", "agentic"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "Anduril Industries"
+ats = "greenhouse"
+board = "andurilindustries"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Anterior"
+ats = "ashby"
+board = "anterior"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Anterior (Sequoia-backed, Series B)"
+ats = "ashby"
+board = "anterior"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Antithesis"
+ats = "ashby"
+board = "antithesis"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Appian Corporation "
+ats = "greenhouse"
+board = "appian"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Applied Materials"
+ats = "ashby"
+board = "applied"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Arcadia"
+ats = "lever"
+slug = "arcadia"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ashby"
+ats = "ashby"
+board = "ashby"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ava Labs"
+ats = "ashby"
+board = "ava-labs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "AvePoint"
+ats = "greenhouse"
+board = "avepoint"
+profiles = ["engineer"]
+
+[[companies]]
+name = "BCC-NIH"
+ats = "greenhouse"
+board = "bcc"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Beacon AI"
+ats = "ashby"
+board = "beaconai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Benzinga"
+ats = "breezy"
+board = "benzinga"
+profiles = ["engineer"]
+
+[[companies]]
+name = "BitGo"
+ats = "greenhouse"
+board = "bitgo"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Blend360"
+ats = "smartrecruiters"
+board = "blend360"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Block"
+ats = "greenhouse"
+board = "block"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Bluprintx"
+ats = "bamboohr"
+board = "bluprintx"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Bridge Defense"
+ats = "rippling"
+board = "bridge-defense"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Bright Machines"
+ats = "lever"
+slug = "brightmachines"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cape"
+ats = "ashby"
+board = "cape"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Capital Group"
+ats = "lever"
+slug = "capital"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Celonis"
+ats = "greenhouse"
+board = "celonis"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Chainguard"
+ats = "greenhouse"
+board = "chainguard"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Checkly"
+ats = "ashby"
+board = "checkly"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Chronograph"
+ats = "greenhouse"
+board = "chronograph"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Citian"
+ats = "greenhouse"
+board = "citian"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Clera"
+ats = "ashby"
+board = "clera"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Coder"
+ats = "ashby"
+board = "coder"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Colonist"
+ats = "ashby"
+board = "colonist"
+profiles = ["engineer"]
+
+[[companies]]
+name = "ConductorAI"
+ats = "ashby"
+board = "conductorai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Confido Legal"
+ats = "ashby"
+board = "confido"
+profiles = ["engineer"]
+
+[[companies]]
+name = "CoVar"
+ats = "greenhouse"
+board = "covar"
+profiles = ["engineer"]
+
+[[companies]]
+name = "CrowdStrike"
+ats = "workday"
+tenant = "crowdstrike"
+wd = "wd5"
+site = "crowdstrikeCareers"
+queries = ["machine learning", "artificial intelligence", "forward deployed", "agentic"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "Curai"
+ats = "lever"
+slug = "curai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Dark Wolf Solutions"
+ats = "greenhouse"
+board = "darkwolfsolutions"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Datadog"
+ats = "greenhouse"
+board = "datadog"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Deeter Analytics"
+ats = "ashby"
+board = "deeter-analytics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Defense Unicorns"
+ats = "greenhouse"
+board = "defenseunicorns"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Doppel"
+ats = "greenhouse"
+board = "doppel"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Dotmatics"
+ats = "greenhouse"
+board = "dotmatics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "eClinical Solutions"
+ats = "greenhouse"
+board = "eclinicalsolutions"
+profiles = ["engineer"]
+
+[[companies]]
+name = "EdgeRunner AI"
+ats = "ashby"
+board = "edgerunner-ai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "EggAI"
+ats = "greenhouse"
+board = "eggai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Esri"
+ats = "greenhouse"
+board = "esri"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Exiger"
+ats = "greenhouse"
+board = "exiger"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Experian"
+ats = "smartrecruiters"
+board = "experian"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Footprint"
+ats = "ashby"
+board = "footprint"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Fortreum, LLC"
+ats = "ashby"
+board = "fortreum"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Foxglove"
+ats = "ashby"
+board = "foxglove"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Gecko Robotics"
+ats = "ashby"
+board = "gecko-robotics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ginas Tech Jobs"
+ats = "smartrecruiters"
+board = "ginastechjobs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "GiveDirectly"
+ats = "greenhouse"
+board = "givedirectly"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Glydways"
+ats = "greenhouse"
+board = "glydways"
+profiles = ["engineer"]
+
+[[companies]]
+name = "goTenna Inc"
+ats = "rippling"
+board = "gotenna-inc"
+profiles = ["engineer"]
+
+[[companies]]
+name = "GRVTY"
+ats = "greenhouse"
+board = "grvty"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Harper"
+ats = "breezy"
+board = "harper"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Hinge Health"
+ats = "ashby"
+board = "hinge-health"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Holder Construction"
+ats = "greenhouse"
+board = "holderconstruction"
+profiles = ["engineer"]
+
+[[companies]]
+name = "HRS Systems"
+ats = "ashby"
+board = "hrs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Hugging Face"
+ats = "workable"
+board = "huggingface"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Huzzle"
+ats = "workable"
+board = "huzzle"
+profiles = ["engineer"]
+
+[[companies]]
+name = "ICEYE"
+ats = "ashby"
+board = "iceye"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Inworld AI"
+ats = "ashby"
+board = "inworld-ai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Libertex Group"
+ats = "workable"
+board = "libertexgroup"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Liftoff"
+ats = "greenhouse"
+board = "liftoff"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Liquid Robotics"
+ats = "ashby"
+board = "liquid"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Lithic"
+ats = "greenhouse"
+board = "lithic"
+profiles = ["engineer"]
+
+[[companies]]
+name = "LiveKit"
+ats = "ashby"
+board = "livekit"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Lyric"
+ats = "ashby"
+board = "lyric"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Mercor"
+ats = "ashby"
+board = "mercor"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Middesk"
+ats = "ashby"
+board = "middesk"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Mirantis"
+ats = "smartrecruiters"
+board = "mirantis"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Molg"
+ats = "ashby"
+board = "molg"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Muon Space"
+ats = "greenhouse"
+board = "muonspace"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Namespace"
+ats = "ashby"
+board = "namespace"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Natera"
+ats = "greenhouse"
+board = "natera"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Neon Commerce"
+ats = "lever"
+slug = "neon"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Neuroscale AI"
+ats = "ashby"
+board = "neuroscale"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Northwood Space"
+ats = "ashby"
+board = "northwoodspace"
+profiles = ["engineer"]
+
+[[companies]]
+name = "NT Concepts"
+ats = "greenhouse"
+board = "ntconcepts"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Oddball"
+ats = "greenhouse"
+board = "oddball"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Oklo"
+ats = "greenhouse"
+board = "oklo"
+profiles = ["engineer"]
+
+[[companies]]
+name = "OneChronos"
+ats = "ashby"
+board = "onechronos"
+profiles = ["engineer"]
+
+[[companies]]
+name = "OneStream"
+ats = "greenhouse"
+board = "onestream"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Path Robotics"
+ats = "greenhouse"
+board = "pathrobotics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Pathos AI"
+ats = "ashby"
+board = "pathos"
+profiles = ["engineer"]
+
+[[companies]]
+name = "PDT Partners"
+ats = "greenhouse"
+board = "pdtpartners"
+profiles = ["engineer"]
+
+[[companies]]
+name = "PermitFlow (YC W22)"
+ats = "ashby"
+board = "permitflow"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Picogrid"
+ats = "ashby"
+board = "picogrid"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Propel Labs"
+ats = "ashby"
+board = "propel"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Pryzm"
+ats = "ashby"
+board = "pryzm"
+profiles = ["engineer"]
+
+[[companies]]
+name = "PVM Inc"
+ats = "bamboohr"
+board = "pvm"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Qualified Health PBC"
+ats = "ashby"
+board = "qualified-health-pbc"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Quartermaster"
+ats = "ashby"
+board = "quartermaster"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Quora"
+ats = "ashby"
+board = "quora"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Rain"
+ats = "ashby"
+board = "rain"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Raspberry AI"
+ats = "ashby"
+board = "raspberry"
+profiles = ["engineer"]
+
+[[companies]]
+name = "ReadMe"
+ats = "ashby"
+board = "readme"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Rebar"
+ats = "ashby"
+board = "rebar"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Rerun"
+ats = "ashby"
+board = "rerun"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Samsara"
+ats = "greenhouse"
+board = "samsara"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Sardine"
+ats = "ashby"
+board = "sardine"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Shift5"
+ats = "greenhouse"
+board = "shift5"
+profiles = ["engineer"]
+
+[[companies]]
+name = "ShiftKey"
+ats = "ashby"
+board = "shiftkey"
+profiles = ["engineer"]
+
+[[companies]]
+name = "SimSpace Corporation"
+ats = "ashby"
+board = "simspace-corporation"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Slingshot Aerospace"
+ats = "greenhouse"
+board = "slingshotaerospace"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Socure"
+ats = "ashby"
+board = "socure"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Sonatype"
+ats = "lever"
+slug = "sonatype"
+profiles = ["engineer"]
+
+[[companies]]
+name = "SpaceX"
+ats = "greenhouse"
+board = "spacex"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Starbridge"
+ats = "ashby"
+board = "starbridge"
+profiles = ["engineer"]
+
+[[companies]]
+name = "State Affairs"
+ats = "greenhouse"
+board = "stateaffairs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Sticker Mule"
+ats = "ashby"
+board = "stickermule"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Strider Technologies"
+ats = "ashby"
+board = "strider-technologies"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Striveworks"
+ats = "greenhouse"
+board = "striveworks"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Suno"
+ats = "ashby"
+board = "suno"
+profiles = ["engineer"]
+
+[[companies]]
+name = "SynthBee, Inc."
+ats = "greenhouse"
+board = "synthbeeinc"
+profiles = ["engineer"]
+
+[[companies]]
+name = "System"
+ats = "greenhouse"
+board = "system"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Tessera Labs"
+ats = "ashby"
+board = "tessera-labs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Tether"
+ats = "recruitee"
+board = "tether"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Tether Operations Limited"
+ats = "recruitee"
+board = "tether"
+profiles = ["engineer"]
+
+[[companies]]
+name = "thatgamecompany"
+ats = "ashby"
+board = "thatgamecompany"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Thyme Care"
+ats = "ashby"
+board = "thyme-care"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Tomorrow.io"
+ats = "greenhouse"
+board = "tomorrow"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Torc Robotics"
+ats = "greenhouse"
+board = "torcrobotics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "TRM Labs"
+ats = "ashby"
+board = "trm-labs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Twenty"
+ats = "ashby"
+board = "twenty"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Udio"
+ats = "greenhouse"
+board = "udio"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Valkyrie Aero"
+ats = "breezy"
+board = "valkyrie-aero"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Vapi"
+ats = "ashby"
+board = "vapi"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Via"
+ats = "greenhouse"
+board = "via"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Viam"
+ats = "greenhouse"
+board = "viamrobotics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Virtru"
+ats = "greenhouse"
+board = "virtru"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Vitalize"
+ats = "ashby"
+board = "vitalize"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Voltus"
+ats = "lever"
+slug = "voltus"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Voxel"
+ats = "ashby"
+board = "voxel"
+profiles = ["engineer"]
+
+[[companies]]
+name = "whitecircle.com/careers, we're building the most advanced AI safety infra, raise"
+ats = "ashby"
+board = "whitecircle"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Wrapbook"
+ats = "ashby"
+board = "wrapbook"
+profiles = ["engineer"]
+
+[[companies]]
+name = "You.com"
+ats = "greenhouse"
+board = "youcom"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Zencastr"
+ats = "ashby"
+board = "zencastr"
+profiles = ["engineer"]
+

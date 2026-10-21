@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><title>Applied AI Engineer at Example Labs</title></head>
+<body>
+<h1>Applied AI Engineer</h1>
+<p>Example Labs · Remote (US)</p>
+<a href="#application-form">Apply</a>
+<form id="application-form">
+  <div class="field"><label for="first_name">First Name *</label><input id="first_name" name="job_application[first_name]" type="text" required></div>
+  <div class="field"><label for="last_name">Last Name *</label><input id="last_name" name="job_application[last_name]" type="text" required></div>
+  <div class="field"><label for="email">Email *</label><input id="email" name="job_application[email]" type="email" required></div>
+  <div class="field"><label for="phone">Phone</label><input id="phone" name="job_application[phone]" type="tel"></div>
+  <div class="field"><label for="resume">Resume/CV *</label><input id="resume" type="file" style="display:none" required><button type="button">Attach</button></div>
+  <div class="field"><label for="question_1">LinkedIn Profile</label><input id="question_1" type="text"></div>
+  <div class="field"><label for="question_2">Are you legally authorized to work in the United States? *</label>
+    <select id="question_2" required><option value="">Select...</option><option>Yes</option><option>No</option></select></div>
+  <div class="field"><label for="question_3">Will you now or in the future require sponsorship for employment visa status?</label>
+    <select id="question_3"><option value="">Select...</option><option>Yes</option><option>No</option></select></div>
+  <div class="field"><label for="question_4">Why do you want to work at Example Labs? *</label><textarea id="question_4" required></textarea></div>
+  <div class="field"><label for="question_5">Did you use AI tools (e.g. ChatGPT) to help complete this application?</label><textarea id="question_5"></textarea></div>
+  <div class="field"><label for="question_6">Gender</label>
+    <select id="question_6"><option value="">Select...</option><option>Male</option><option>Female</option><option>Decline To Self Identify</option></select></div>
+  <div class="field"><label for="question_7">Current Company</label><input id="question_7" type="text"></div>
+  <div class="field"><label for="consent">I consent to the processing of my personal data as described in the privacy policy.</label><input id="consent" type="checkbox"></div>
+  <div class="field"><div class="application-label">Which languages do you speak fluently? *</div>
+    <div><label><input type="checkbox" name="q_lang" value="1"> English (ENG)</label><label><input type="checkbox" name="q_lang" value="2"> Spanish</label><label><input type="checkbox" name="q_lang" value="3"> Choose not to disclose</label></div></div>
+  <div class="field"><div class="application-label">Please select all that apply: *</div>
+    <div><label><input type="checkbox" name="q_exp" value="1"> Citizen or permanent resident of Cuba, Iran, North Korea, or Syria</label>
+         <label><input type="checkbox" name="q_exp" value="2"> Ordinarily a resident of Russia or Belarus</label>
+         <label><input type="checkbox" name="q_exp" value="3"> None of the above</label></div></div>
+  <div class="field"><div class="application-label">Over the past 18 months, what percentage of your work has involved hands-on coding?</div>
+    <select id="question_8"><option value="">Select...</option><option>0-25%</option><option>25-50%</option><option>50-100%</option></select></div>
+  <button type="button" id="submit_app" onclick="document.getElementById('done').textContent='Thank you for applying to Example Labs.'">Submit application</button>
+  <div id="done"></div>
+  <input required tabindex="-1" aria-hidden="true" class="requiredInput" value="">
+</form>
+</body></html>

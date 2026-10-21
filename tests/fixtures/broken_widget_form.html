@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><title>Engineer - Example (a widget no adapter knows)</title></head>
+<body>
+<form id="application-form">
+  <label for="name">Full name *</label><input id="name" name="name" required>
+  <label for="email">Email *</label><input id="email" name="email" required>
+  <label for="resume">Resume *</label><input id="resume" name="resume" type="file" required>
+  <!-- a read-only display with its own picker: typing into it fails, choosing from the list works -->
+  <div class="picker-field">
+    <label for="org">Current company *</label>
+    <input id="org" name="org" readonly required>
+    <button type="button" class="picker-open" onclick="document.getElementById('menu').style.display='block'">Choose</button>
+    <ul id="menu" class="picker-menu" style="display:none">
+      <li onclick="document.getElementById('org').value=this.textContent; this.parentElement.style.display='none'">Other Inc</li>
+      <li onclick="document.getElementById('org').value=this.textContent; this.parentElement.style.display='none'">Example Corp</li>
+    </ul>
+  </div>
+  <button type="button">Submit application</button>
+</form>
+</body></html>

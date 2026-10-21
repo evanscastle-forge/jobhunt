@@ -1,0 +1,1788 @@
+# jobhunt shared configuration. Every scan re-reads this file.
+#
+# What lives here is the same for every profile: location vocabularies, the list of company boards
+# to fetch, source toggles, LLM settings. What each person is looking for lives in
+# profiles/<name>/search.toml, which overrides any table below key-by-key and may add [[companies]].
+#
+# A [[companies]] entry with `profiles = ["engineer"]` is only scored for a profile whose folder is
+# named "engineer" or whose search.toml lists it in `board_tags` (it is still fetched once). Without
+# `profiles`, every profile sees it. Tags name a kind of search, never a person.
+
+[location]
+# How far away a posting is, measured for real: the location string is resolved against the US Census
+# place gazetteer bundled at jobhunt/data/us_places.csv and compared with `origin`. A band says how
+# OFTEN you could show up, which is the only question that matters about a distance:
+#   remote       no office to reach
+#   daily        <= daily_miles      a drive you would make every working day
+#   monthly      <= monthly_miles    a drive you would make for a day on site, once or twice a month
+#   quarterly    <= radius_miles     a trip you would take a few times a year
+#   relocate     > radius_miles      (dropped when keep_us_onsite = false)
+# Whether you could turn up as often as a job REQUIRES is a gate, not a score: see [travel] below
+# and gates.reach_gate. A posting that states a cadence you could not meet is retired, not demoted.
+# Set `origin` to your own city in your profile's search.toml; the value here is the example profiles'.
+# 120 miles is about two hours on the interstate.
+origin = "Columbus, Ohio"
+daily_miles = 0        # 0 turns the distinction off: everything inside monthly_miles is "monthly"
+monthly_miles = 120
+radius_miles = 500
+# The location SCORE (not the gates above): office days a week x commute time. Minutes come from the
+# distance at commute_mph door to door; days from the posting when it says, else assumed_office_days.
+commute_mph = 45
+assumed_office_days = 3
+# remote_or_commutable: keep remote-US and in-radius postings, drop non-US.
+# remote_or_daily: keep remote-US and offices inside daily_miles; any office further away goes
+#   remote_only: drops onsite too. any: keep everything, incl. non-US.
+mode = "remote_or_commutable"
+keep_us_onsite = true   # false: drop onsite postings BEYOND radius_miles (inside it they are kept)
+# Fallback vocabulary only, for strings the gazetteer cannot place (regional nicknames, small
+# census-designated places with no population of their own). List your own in search.toml.
+# Real distance does the work; anything listed here is treated as monthly_miles away, never as
+# home -- returning 0 once put real offices an hour away in the nearest band, above a placed one.
+# Bare state names ("virginia", "washington", "maryland") never belong here: as substrings they
+# matched West Virginia and Seattle.
+commutable = []
+us_markers = [
+  "united states", "usa", "u.s.", " us", "(us)", "us-", "us -", "- us", "north america", "americas", "anywhere",
+]
+non_us = [
+  "london", "united kingdom", "uk", "england", "ireland", "dublin", "india", "bangalore", "bengaluru", "hyderabad",
+  "mumbai", "pune", "gurgaon", "germany", "munich", "berlin", "france", "paris", "netherlands", "amsterdam",
+  "spain", "madrid", "barcelona", "italy", "milan", "portugal", "lisbon", "poland", "warsaw", "sweden", "stockholm",
+  "switzerland", "zurich", "austria", "japan", "tokyo", "korea", "seoul", "singapore", "australia", "sydney",
+  "melbourne", "new zealand", "canada", "toronto", "vancouver", "montreal", "ottawa", "israel", "tel aviv",
+  "brazil", "sao paulo", "são paulo", "mexico", "argentina", "colombia", "chile", "dubai", "uae", "qatar", "doha",
+  "middle east", "emea", "apac", "latam", "europe", "international", "philippines", "vietnam", "indonesia",
+  "malaysia", "thailand", "taiwan", "china", "hong kong", "nigeria", "south africa", "kenya", "egypt", "turkey",
+  "remote - india", "remote india", "remote - europe", "bogota", "bogotá", "slovakia", "bratislava", "czech", "prague",
+  "hungary", "budapest", "romania", "bucharest", "bulgaria", "sofia", "greece", "athens", "denmark", "copenhagen",
+  "norway", "oslo", "finland", "helsinki", "belgium", "brussels", "latin america", "south america", "central europe",
+  "eastern europe", "pakistan", "sri lanka", "peru", "lima", "costa rica", "uruguay", "ecuador", "guatemala",
+  "serbia", "croatia", "ukraine", "kyiv", "estonia", "tallinn", "lithuania", "vilnius", "latvia", "riga",
+  "new delhi", "chennai", "kolkata", "noida", "ahmedabad", "jakarta", "manila", "bangkok", "kuala lumpur",
+  "ho chi minh", "hanoi", "taipei", "shanghai", "beijing", "shenzhen", "osaka", "auckland", "brisbane", "perth",
+  "cape town", "johannesburg", "lagos", "nairobi", "cairo", "istanbul", "riyadh", "abu dhabi", "amman",
+  # Countries as their own residents spell them. A board that lists "Minas Gerais, Brasil" was reading
+  # as an unknown location and sailing through the gate, because only "brazil" was here -- and its
+  # Portuguese job titles matched an English keyword by prefix ("agente" for "agent"). The location
+  # is the load-bearing check: get the country right and the title never gets a chance to be wrong.
+  # The rest of the world, pruned of every name an American town also carries. A US state code
+  # cannot be used to rescue those towns: "Munich, DE" and "Toronto, CA" look exactly like a US
+  # state too, and letting a code override a country name is how Seattle once counted as
+  # commutable from Virginia. So the list simply leaves the collisions out.
+  #
+  # DELIBERATELY ABSENT, because a US town shares the name: georgia (the state), lebanon (NH),
+  # jordan (MN), panama (City, FL), cuba (MO), malta (NY), trinidad (CO), monaco (PA), angola (IN),
+  # bolivia (NC), liberia, chad, niger. Their capitals are listed instead where it matters --
+  # beirut, amman, podgorica -- which is unambiguous and costs nothing.
+  "afghanistan", "albania", "algeria", "andorra", "armenia", "azerbaijan", "bahrain",
+  "bangladesh", "belarus", "benin", "bhutan", "bosnia", "botswana", "brunei",
+  "burkina faso", "burundi", "cambodia", "cameroon", "congo", "cyprus", "dominican republic",
+  "el salvador", "eritrea", "eswatini", "ethiopia", "fiji", "gabon", "gambia", "ghana", "guinea",
+  "guyana", "haiti", "honduras", "iceland", "iran", "iraq", "jamaica", "kazakhstan",
+  "kosovo", "kuwait", "kyrgyzstan", "laos", "lesotho", "libya",
+  "liechtenstein", "luxembourg", "macedonia", "madagascar", "malawi", "maldives", "mauritania", "mauritius", "moldova", "mongolia", "montenegro", "morocco", "mozambique",
+  "myanmar", "namibia", "nepal", "nicaragua", "north macedonia", "oman", "papua new guinea", "paraguay", "rwanda", "san marino", "saudi arabia", "senegal", "sierra leone",
+  "slovenia", "somalia", "sudan", "suriname", "syria", "tajikistan", "tanzania", "togo", "tunisia", "turkmenistan", "uganda", "uzbekistan", "venezuela", "yemen", "zambia", "zimbabwe",
+  "yerevan", "tbilisi", "baku", "almaty", "tashkent", "chisinau", "sarajevo", "skopje", "podgorica",
+  "ljubljana", "minsk", "tirana", "valletta", "reykjavik", "beirut", "amman", "muscat", "doha",
+  "brasil", "méxico", "mexico city", "españa", "espana", "deutschland", "österreich", "osterreich",
+  "schweiz", "suisse", "italia", "polska", "sverige", "norge", "danmark", "suomi", "nederland",
+  "belgië", "belgique", "türkiye", "turkiye", "cesko", "magyarország", "românia", "romania",
+  "minas gerais", "sao paulo, brasil", "são paulo, brasil", "bogotá, colombia", "lima, peru",
+]
+
+[travel]
+max_pct_ok = 10    # travel up to this percentage is classified "light" and measures -4; the measure falls to -10
+                   # at 2.5x this. Any travel is a negative; a stated 0% and silence are 0.
+
+[recency]
+# Posting age (from the board's posted date, or from when we first saw an undated posting). The
+# `freshness` measure runs +10 under peak_days, 0 at fresh_days, -10 at stale_days and beyond; the
+# same keys name the bands the dashboard shows (fresh under fresh_days, mid under stale_days, stale).
+peak_days = 7          # younger than this: +10
+fresh_days = 14        # here the measure crosses 0
+stale_days = 30        # -10 from here on: a month-old posting is probably filled
+
+[enterprise]
+# The one gate that fires on a model reading. A posting the model rates
+# `enterprise_software` at `rating` or above is retired unless it states a base above `pay_floor`.
+# Unstated pay is not above the floor. 0 on either turns the gate off. See AGENTS.md.
+rating = 7
+pay_floor = 0          # set yours in search.toml; 0 leaves the gate off until a profile turns it on
+
+[scoring]
+# Every attribute is measured from -10 to +10. The SIGN says whether it helps or hurts, and ZERO
+# means the attribute is simply absent, so a posting is never punished for staying silent. Every
+# weight below is 0..10 and says only how much you care; 0 turns an attribute off.
+#
+# The total has no units, so it is never shown as a number you are meant to interpret. Grades are
+# cutoffs at fixed distances from the mean of what was actually scored (A+ is two standard
+# deviations up), which means a weak week honestly produces no A grades instead of promoting the
+# least bad posting. Run `jobhunt.py retune` after changing anything here.
+# The New tab shows this grade and better; the rest sit behind the "hidden" link. B+ is roughly the
+# top quarter, which is a list you can actually work through: 500 postings you skim is worse than
+# 240 you read.
+min_grade = "B+"
+clearance_active = false  # true if you hold an active clearance today: postings that require one
+                          # then measure +8 instead of -10. Lapsed or never held: leave it false.
+
+# Every attribute contributes weight x measure (a role attribute also times role_weight / 10), and
+# the dashboard shows exactly that multiplier. The shipped order: overall fit, location, pay, travel
+# and product ownership first; freshness next; domain, feedback loop and seniority after; everything
+# else lower. Override any of it in search.toml.
+role_weight = 10          # multiplier on the whole role family: 10 = as weighted below
+overall_fit = 10          # the model's single read of the whole role
+
+[scoring.pay]
+target = 150000           # a posting topping out here measures +10. Set yours in search.toml.
+floor = 120000            # and -10 here; unstated pay measures 0 and costs nothing
+                          # postings state base, so these are base
+
+[scoring.role]            # the model reads each posting and rates these
+product_ownership   = 10  # +10 owns what users touch; -10 plumbing nobody sees
+domain              = 6   # +10 agentic AI, autonomy, robotics, simulation, CV, defense, gov, space, manufacturing,
+                          #     health, financial infra, audio, materials; 0 none; -10 consumer apps or consumer lending
+feedback_loop       = 6   # +10 see the result of a change in hours or days; -10 weeks or quarters away
+seniority_fit       = 6   # +10 staff/lead/principal IC; +5 senior IC; 0 not stated; -10 junior, mid or management
+work_shape          = 2   # +10 broad, changing, greenfield, own approach; -10 one narrow lane of chores on someone's plan
+pace                = 2   # +10 steady, sustainable; -10 hair-on-fire, 60-hour weeks; 0 nothing said
+equity_stage        = 2   # +10 Series A-C with real equity; -10 public, PE-owned, bootstrapped services, contract
+enterprise_software = 0   # read by the [enterprise] gate, never by the score: 0 so it cannot also demote
+
+[scoring.practical]       # measured from the posting, never guessed
+pay               = 10    # -10 at the floor, +10 at the target; unstated pay measures 0 and costs nothing
+location          = 10    # +10 remote, +9 no commute, +4 for 30 min daily, <= -8 past an hour more than weekly
+travel            = 10    # never positive: -4 up to [travel] max_pct_ok, falling to -10 at 2.5x that; silence 0
+freshness         = 8     # +10 under [recency] peak_days, 0 at fresh_days, -10 at stale_days; undated-forever 0
+clearance         = 3     # -10 needs a clearance already active; +3 eligibility only
+
+# Ceilings on the sources that charge. A quota is not a rate limit: the per-host throttle paces
+# requests so a server is never hit too fast, while this is a budget that does not refill. Measured
+# against the entries below as they were first written, a nightly scan would have exhausted Adzuna's
+# week in five days and Jooble permanently in under a week.
+#
+# A source whose allowance does not refill can never be a per-scan source, however useful it is.
+# Counters live in data/quota.json and are spent BEFORE the request, so a crash costs the budget
+# rather than silently overspending it. 0 means no ceiling.
+[quota]
+adzuna.per_day = 200        # free tier: 250/day, 1000/week, 2500/month. Leave headroom for discover.
+serpapi.per_day = 8         # free tier: 250 searches a MONTH, so about eight a day
+jooble.lifetime = 500       # the whole allowance this key will ever have
+usajobs.per_day = 0         # unlimited, and free
+
+[discovery]
+# `jobhunt.py discover` finds companies rather than fetching ones you already named: it harvests
+# employer names from every source that reports one, guesses their Greenhouse/Lever/Ashby board
+# token, probes it, and keeps the board only if it carries work you want and could reach.
+#
+# A board that answers but has nothing relevant is PARKED, not discarded -- its token is known, and
+# rechecking costs one request, which catches the day it posts the role you were waiting for.
+max_daily_boards = 600    # the daily scan's ceiling. 160 boards is a 155MB cache and 7 minutes;
+                          # promotions past this are parked, least promising first, and reported.
+recheck_days = 90         # how long a parked board waits before it is looked at again
+requests_per_second = 4   # per hostname, across every source. Politeness, and not getting blocked.
+
+[apply]
+# How many apply windows may wait for your review at once; the rest stay queued.
+max_open_windows = 6
+# The browser apply windows use. "chrome" is your installed Google Chrome ("" = Playwright's bundled
+# Chromium). With persistent_profile, each window reuses a profile under profiles/<name>/data/browser/,
+# so cookies and portal logins survive between runs, as a person's browser would.
+browser = "chrome"
+persistent_profile = true
+# On Apply, build a resume variant keyed to the posting's vocabulary from profiles/<name>/resume/master.html
+# and upload it instead of documents.resume (docs/apply-design.md, "The resume: one variant per posting").
+# Only approved entries in resume/terms.md are applied. No master: the base resume is uploaded.
+tailor_resume = true
+
+[sources]
+hn_who_is_hiring = true   # Hacker News monthly thread (noisier, but startups you'd never find otherwise)
+hn_max_comments = 3000
+
+[llm]
+backend = "claude-cli"    # none | claude-cli | anthropic   (see README; drafts are always flagged for review)
+model = "claude-sonnet-5"   # passed to every call (scoring, the applicant agent, self-healing)
+effort = "medium"           # claude-cli only: low | medium | high | xhigh | max
+
+[llm.resume]                # the one call that reads a posting for the resume variant (apply, resume variant/propose):
+model = "claude-fable-5-1"  # extraction, not judgement, so Fable at low effort; everything else keeps [llm]
+effort = "low"
+
+# ---------------------------------------------------------------------------------------------
+# Company boards. ats = greenhouse | lever | ashby | workday | usajobs.
+# Tokens marked "verified" answered the public feed on Sept 15, 2026; a wrong token just logs an
+# error on scan. Find a token from a careers page URL:  job-boards.greenhouse.io/<board>/...,
+# jobs.lever.co/<slug>/..., jobs.ashbyhq.com/<board>/...
+# ---------------------------------------------------------------------------------------------
+
+# --- frontier labs / AI platforms (everyone: they hire data scientists too)
+[[companies]]
+name = "Anthropic"
+ats = "greenhouse"
+board = "anthropic"
+
+[[companies]]
+name = "OpenAI"
+ats = "ashby"
+board = "openai"
+
+[[companies]]
+name = "Databricks"
+ats = "greenhouse"
+board = "databricks"
+
+[[companies]]
+name = "Scale AI"
+ats = "greenhouse"
+board = "scaleai"
+
+# --- engineer: AI platforms, FDE-heavy shops
+[[companies]]
+name = "Cohere"
+ats = "ashby"
+board = "cohere"
+profiles = ["engineer"]
+
+[[companies]]
+name = "xAI"
+ats = "greenhouse"
+board = "xai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "NVIDIA"            # experimental Workday source
+ats = "workday"
+tenant = "nvidia"
+wd = "wd5"
+site = "NVIDIAExternalCareerSite"
+queries = ["solutions architect", "forward deployed", "agentic", "applied"]
+profiles = ["engineer"]
+
+[[companies]]
+name = "Palantir"
+ats = "lever"
+slug = "palantir"
+profiles = ["engineer"]
+
+[[companies]]
+name = "CoreWeave"
+ats = "greenhouse"
+board = "coreweave"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cloudflare"
+ats = "greenhouse"
+board = "cloudflare"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Glean"
+ats = "greenhouse"
+board = "gleanwork"
+profiles = ["engineer"]
+
+# --- engineer: defense / autonomy / mission
+[[companies]]
+name = "Vannevar Labs"
+ats = "greenhouse"
+board = "vannevarlabs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Anduril"
+ats = "greenhouse"
+board = "andurilindustries"
+profiles = ["engineer"]
+
+# govini.com/careers redirects to air.ai (6 Oct 2026); the Greenhouse board answers as "Air" and lists
+# Forward Deployed Software Engineer / Data Scientist roles in Arlington, Pittsburgh and remote. Named
+# here rather than in the candidate list because discovery would reject the "Govini" name as a mismatch.
+[[companies]]
+name = "Air (formerly Govini)"
+ats = "greenhouse"
+board = "air"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Applied Intuition"
+ats = "ashby"
+board = "applied"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Shield AI"          # unverified token; enable if you want to see it
+ats = "greenhouse"
+board = "shieldai"
+enabled = false
+profiles = ["engineer"]
+
+[[companies]]
+name = "Second Front Systems"   # greenhouse board 'secondfront' 404s (Sept 2026)
+ats = "greenhouse"
+board = "secondfront"
+enabled = false
+profiles = ["engineer"]
+
+[[companies]]
+name = "Saronic"                # unverified
+ats = "ashby"
+board = "saronic"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Physical Intelligence"  # unverified
+ats = "ashby"
+board = "physicalintelligence"
+profiles = ["engineer"]
+
+# --- engineer: AI-native product companies (agents, voice, multimodal)
+[[companies]]
+name = "ElevenLabs"
+ats = "ashby"
+board = "elevenlabs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Sierra"
+ats = "ashby"
+board = "sierra"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Decagon"
+ats = "ashby"
+board = "decagon"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Harvey"
+ats = "ashby"
+board = "harvey"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Writer"
+ats = "ashby"
+board = "writer"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cognition"
+ats = "ashby"
+board = "cognition"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Perplexity"
+ats = "ashby"
+board = "perplexity"
+profiles = ["engineer"]
+
+[[companies]]
+name = "LangChain"
+ats = "ashby"
+board = "langchain"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Distyl AI"
+ats = "ashby"
+board = "distyl"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ascertain"
+ats = "ashby"
+board = "ascertain"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Maybern"
+ats = "ashby"
+board = "maybern"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ramp"
+ats = "ashby"
+board = "ramp"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Deepgram"               # unverified
+ats = "ashby"
+board = "deepgram"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Modal"                  # unverified
+ats = "ashby"
+board = "modal"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Baseten"                # unverified
+ats = "ashby"
+board = "baseten"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Hebbia"                 # ashby board 'hebbia' 404s (Sept 2026)
+ats = "ashby"
+board = "hebbia"
+enabled = false
+profiles = ["engineer"]
+
+[[companies]]
+name = "Rogo"                   # unverified
+ats = "ashby"
+board = "rogo"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Runway"                 # greenhouse board 'runwayml' 404s (Sept 2026)
+ats = "greenhouse"
+board = "runwayml"
+enabled = false
+profiles = ["engineer"]
+
+[[companies]]
+name = "Together AI"            # unverified
+ats = "greenhouse"
+board = "togetherai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cerebras"               # greenhouse board 'cerebras' 404s (Sept 2026)
+ats = "greenhouse"
+board = "cerebras"
+enabled = false
+profiles = ["engineer"]
+
+[[companies]]
+name = "Weights & Biases"       # lever slug 'wandb' returns 404 (Sept 2026); find the new board before enabling
+ats = "lever"
+slug = "wandb"
+enabled = false
+profiles = ["engineer"]
+
+# --- engineer: big-vendor Workday sites (experimental; enable to try)
+[[companies]]
+name = "Snowflake"
+ats = "workday"
+tenant = "snowflake"
+wd = "wd5"
+site = "Snowflake_Careers"
+queries = ["forward deployed", "solutions architect", "applied ai"]
+enabled = false
+profiles = ["engineer"]
+
+[[companies]]
+name = "Salesforce"
+ats = "workday"
+tenant = "salesforce"
+wd = "wd12"
+site = "External_Career_Site"
+queries = ["forward deployed engineer"]
+enabled = false
+profiles = ["engineer"]
+
+# --- analyst: health data / research orgs (verified Sept 2026)
+[[companies]]
+name = "Flatiron Health"
+ats = "greenhouse"
+board = "flatironhealth"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Oscar Health"
+ats = "greenhouse"
+board = "oscar"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Komodo Health"
+ats = "greenhouse"
+board = "komodohealth"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Truveta"
+ats = "greenhouse"
+board = "truveta"
+profiles = ["analyst"]
+
+[[companies]]
+name = "RTI International"      # research-triangle nonprofit; survey / public-health statistics
+ats = "greenhouse"
+board = "rti"
+profiles = ["analyst"]
+
+# --- analyst: consumer / fintech data-science teams with remote roles (verified Sept 2026)
+[[companies]]
+name = "Stripe"
+ats = "greenhouse"
+board = "stripe"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Duolingo"
+ats = "greenhouse"
+board = "duolingo"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Reddit"
+ats = "greenhouse"
+board = "reddit"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Airbnb"
+ats = "greenhouse"
+board = "airbnb"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Coursera"
+ats = "greenhouse"
+board = "coursera"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Chime"
+ats = "greenhouse"
+board = "chime"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Figma"
+ats = "greenhouse"
+board = "figma"
+profiles = ["analyst", "engineer"]
+
+[[companies]]
+name = "Lyft"
+ats = "greenhouse"
+board = "lyft"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Pinterest"
+ats = "greenhouse"
+board = "pinterest"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Twitch"
+ats = "greenhouse"
+board = "twitch"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Dropbox"
+ats = "greenhouse"
+board = "dropbox"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Affirm"
+ats = "greenhouse"
+board = "affirm"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Robinhood"
+ats = "greenhouse"
+board = "robinhood"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Brex"
+ats = "greenhouse"
+board = "brex"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Spotify"
+ats = "lever"
+slug = "spotify"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Notion"
+ats = "ashby"
+board = "notion"
+profiles = ["analyst"]
+
+# --- federal postings. Needs a free API key:
+#     https://developer.usajobs.gov/apirequest/  -> put USAJOBS_API_KEY=... and USAJOBS_EMAIL=... in .env
+# Anchored on a place, so it ships disabled: copy it into your profile's search.toml with your own
+# `locations` and enabled = true. USAJOBS applies the radius server-side, one sweep per anchor.
+[[companies]]
+name = "USAJOBS"
+ats = "usajobs"
+queries = ["data scientist", "statistician", "survey statistician", "mathematical statistician", "data analyst"]
+locations = ["Columbus, Ohio"]
+radius_miles = 40
+remote = true
+enabled = false
+profiles = ["analyst"]
+
+[[companies]]
+name = "USAJOBS (engineering)"
+ats = "usajobs"
+queries = ["machine learning", "artificial intelligence", "computer scientist", "autonomy", "data scientist",
+           "operations research analyst"]
+locations = ["Columbus, Ohio"]
+radius_miles = 75
+remote = true
+enabled = false
+profiles = ["engineer"]
+
+# --- engineer: defense primes and government contractors (Workday; verified Sept 2026).
+# A dense job market for cleared and defense work that no feed covered before. Workday charges a request
+# per posting for the description, so `queries` narrows server-side first; `max_details` is the
+# budget for how many of the survivors get a description at all.
+[[companies]]
+name = "Leidos"
+ats = "workday"
+tenant = "leidos"
+wd = "wd5"
+site = "External"
+queries = ["machine learning", "artificial intelligence", "autonomy", "data scientist", "forward deployed"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "Booz Allen Hamilton"
+ats = "workday"
+tenant = "bah"
+wd = "wd1"
+site = "BAH_Jobs"
+queries = ["machine learning", "artificial intelligence", "autonomy", "data scientist", "forward deployed"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "CACI"
+ats = "workday"
+tenant = "caci"
+wd = "wd1"
+site = "External"
+queries = ["machine learning", "artificial intelligence", "autonomy", "data scientist"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "Northrop Grumman"
+ats = "workday"
+tenant = "ngc"
+wd = "wd1"
+site = "Northrop_Grumman_External_Site"
+queries = ["machine learning", "artificial intelligence", "autonomy", "data scientist"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "GDIT"
+ats = "workday"
+tenant = "gdit"
+wd = "wd5"
+site = "External_Career_Site"
+queries = ["machine learning", "artificial intelligence", "autonomy", "data scientist"]
+max_details = 300
+profiles = ["engineer"]
+
+[[companies]]
+name = "Parsons"
+ats = "workday"
+tenant = "parsons"
+wd = "wd5"
+site = "Search"
+queries = ["machine learning", "artificial intelligence", "autonomy", "data scientist"]
+max_details = 300
+profiles = ["engineer"]
+
+# Known to hire heavily in the corridor but NOT reachable yet: Peraton and Noblis (iCIMS),
+# ManTech (Avature), MITRE (Phenom), Dominion Energy (SuccessFactors), GA-CCRi (General Atomics'
+# BrassRing), Lockheed, RTX, SAIC, L3Harris and Amentum (no public feed found). None of these ATSes serve JSON; adding them means
+# writing a scraper per vendor. Listed here so the gap is visible rather than silent.
+
+# --- public job boards (no key). Everyone: the title gate per profile keeps what fits.
+[[companies]]
+name = "Remotive"
+ats = "remotive"
+categories = ["software-dev", "data", "product"]
+
+[[companies]]
+name = "RemoteOK"
+ats = "remoteok"
+
+[[companies]]
+name = "Arbeitnow"              # almost entirely European postings; enable if that ever changes
+ats = "arbeitnow"
+max_pages = 8
+enabled = false
+
+[[companies]]
+name = "Himalayas"
+ats = "himalayas"
+max_pages = 30
+
+[[companies]]
+name = "The Muse"
+ats = "themuse"
+categories = ["Data and Analytics", "Software Engineering", "Data Science"]
+# Asked of the API one at a time. Remote only here; a profile that wants local offices adds its own
+# Muse entry with its cities in search.toml.
+locations = ["Flexible / Remote"]
+max_pages = 25
+
+# --- aggregators with free API keys (skipped with one log line until the keys are in .env)
+#     Adzuna: https://developer.adzuna.com  -> ADZUNA_APP_ID, ADZUNA_APP_KEY
+#     Jooble: https://jooble.org/api/about   -> JOOBLE_KEY
+# The best free source of SMALL local employers: a keyword search by place returns companies no
+# board list knows, and `discover` then finds their boards. 7 queries x 3 anchors x 2 pages = 42 a
+# night, plus 9 for the remote entry below: ~357 a week against 1,000. Widen only if the quota is.
+[[companies]]
+name = "Adzuna"
+ats = "adzuna"
+queries = ["robotics engineer", "autonomy engineer", "perception engineer", "computer vision engineer",
+           "machine learning engineer", "forward deployed engineer", "applied ai engineer"]
+# `where` + `distance` are Adzuna's own parameters: one radius sweep per anchor, which is how a
+# keyword search gets pinned to the region instead of returning a national sample. Anchored on a
+# place, so it ships disabled: copy it into search.toml with your own `locations`.
+locations = ["Columbus, OH"]
+distance_miles = 75
+max_pages = 2
+enabled = false
+
+# The entry above is pinned to anchors with a radius, which is how a keyword search finds jobs
+# you could actually reach. Discovery wants the opposite: a remote role at a San Francisco company is
+# invisible to a "within 100 miles of home" sweep, and that company is exactly the one worth
+# finding a board for. So this entry sweeps nationally for remote work, and `jobhunt.py discover`
+# harvests the employer names out of whatever it returns.
+[[companies]]
+name = "Adzuna US remote (discovery)"
+ats = "adzuna"
+queries = ["remote machine learning engineer", "remote forward deployed engineer", "remote agentic ai"]
+max_pages = 3
+profiles = ["engineer"]
+
+# Companies that publish no job feed: the careers page itself is read once per scan and its job-title
+# links become postings (sources.fetch_page). Use only when `discover` finds no board for the company.
+[[companies]]
+name = "Perrone Robotics"
+ats = "page"
+url = "https://www.perronerobotics.com/careers/"
+location = "Charlottesville, VA"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Looq AI"            # utility 3D vision
+ats = "page"
+url = "https://looq.ai/careers/"
+location = "San Diego, CA"
+profiles = ["engineer"]
+
+# Google Jobs, via SerpApi. The only legitimate route to LinkedIn, Indeed, ZipRecruiter and
+# Glassdoor: all four close their APIs to the public, and Google indexes all four. Each posting says
+# which board it came from, and the apply link usually points at the employer's own posting.
+# Free tier is 250 searches a MONTH, so this is deliberately tiny -- 3 queries x 2 anchors x 1 page
+# is 6 a run, and [quota] serpapi.per_day holds it to 8. Dark until SERPAPI_KEY is in .env.
+[[companies]]
+name = "Google Jobs (SerpApi)"
+ats = "serpapi"
+queries = ["forward deployed engineer", "applied ai engineer", "machine learning engineer remote"]
+locations = ["Columbus, Ohio", "United States"]
+max_pages = 1
+enabled = false             # anchored on a place: copy into search.toml with your own locations
+profiles = ["engineer"]
+
+# Jooble's free key is 500 requests for its entire life, not per month. At 90 a scan it would be
+# permanently spent inside a week, so it is not a scan source: enable it once, run `discover` to
+# harvest employer names from what it returns, and park it again.
+[[companies]]
+name = "Jooble"
+enabled = false
+ats = "jooble"
+queries = ["forward deployed engineer", "applied ai engineer", "machine learning engineer", "data scientist",
+           "statistician remote"]
+locations = ["United States"]
+max_pages = 3
+
+# --- boards verified by tools/probe_boards.py
+
+[[companies]]
+name = "1X"
+ats = "ashby"
+board = "1x"
+profiles = ["engineer"]
+
+[[companies]]
+name = "2U"
+ats = "greenhouse"
+board = "2u"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Abridge"
+ats = "ashby"
+board = "abridge"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Abt Global"
+ats = "lever"
+slug = "abt"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Agility Robotics"
+ats = "greenhouse"
+board = "agilityrobotics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Airbyte"
+ats = "ashby"
+board = "airbyte"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Aledade"
+ats = "lever"
+slug = "aledade"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Ambience Healthcare"
+ats = "ashby"
+board = "ambiencehealthcare"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Amplify"
+ats = "ashby"
+board = "amplify"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Amplitude"
+ats = "greenhouse"
+board = "amplitude"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Anyscale"
+ats = "ashby"
+board = "anyscale"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Apptronik"
+ats = "greenhouse"
+board = "apptronik"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Arize"
+ats = "greenhouse"
+board = "arizeai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Asana"
+ats = "greenhouse"
+board = "asana"
+profiles = ["analyst"]
+
+[[companies]]
+name = "AssemblyAI"
+ats = "greenhouse"
+board = "assemblyai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Astranis"
+ats = "greenhouse"
+board = "astranis"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Astronomer"
+ats = "ashby"
+board = "astronomer"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Attentive"
+ats = "greenhouse"
+board = "attentive"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Benchling"
+ats = "ashby"
+board = "benchling"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Bolt"
+ats = "greenhouse"
+board = "stackblitz"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Braintrust"
+ats = "ashby"
+board = "braintrust"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Braze"
+ats = "greenhouse"
+board = "braze"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Brookings"
+ats = "lever"
+slug = "brookings"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Browserbase"
+ats = "ashby"
+board = "browserbase"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Calm"
+ats = "greenhouse"
+board = "calm"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Carta"
+ats = "greenhouse"
+board = "carta"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Cartesia"
+ats = "ashby"
+board = "cartesia"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cedar"
+ats = "ashby"
+board = "cedar"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Cerebras"
+ats = "ashby"
+board = "cerebras"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Character.AI"
+ats = "ashby"
+board = "character"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Chroma"
+ats = "ashby"
+board = "trychroma"
+profiles = ["engineer"]
+
+[[companies]]
+name = "ClickHouse"
+ats = "ashby"
+board = "clickhouse"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Clover Health"
+ats = "greenhouse"
+board = "cloverhealth"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Cockroach Labs"
+ats = "greenhouse"
+board = "cockroachlabs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Coinbase"
+ats = "greenhouse"
+board = "coinbase"
+profiles = ["analyst", "engineer"]
+
+[[companies]]
+name = "Composio"
+ats = "ashby"
+board = "composio"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Confluent"
+ats = "ashby"
+board = "confluent"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cresta"
+ats = "greenhouse"
+board = "cresta"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Crusoe"
+ats = "ashby"
+board = "crusoe"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Cursor"
+ats = "ashby"
+board = "cursor"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Descript"
+ats = "greenhouse"
+board = "descript"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Dexterity"
+ats = "lever"
+slug = "dexterity"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Discord"
+ats = "greenhouse"
+board = "discord"
+profiles = ["analyst"]
+
+[[companies]]
+name = "DoorDash"
+ats = "greenhouse"
+board = "doordashusa"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Dremio"
+ats = "greenhouse"
+board = "dremio"
+profiles = ["engineer"]
+
+[[companies]]
+name = "E2B"
+ats = "ashby"
+board = "e2b"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Elastic"
+ats = "greenhouse"
+board = "elastic"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Epirus"
+ats = "greenhouse"
+board = "epirus"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Etched"
+ats = "ashby"
+board = "etched"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Exa"
+ats = "ashby"
+board = "exa"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Factory"
+ats = "ashby"
+board = "factory"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Faire"
+ats = "greenhouse"
+board = "faire"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Fastly"
+ats = "greenhouse"
+board = "fastly"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Figure AI"
+ats = "greenhouse"
+board = "figureai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Firecrawl"
+ats = "ashby"
+board = "firecrawl"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Fireworks AI"
+ats = "ashby"
+board = "fireworks"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Fivetran"
+ats = "greenhouse"
+board = "fivetran"
+profiles = ["engineer", "analyst"]
+
+[[companies]]
+name = "Fly.io"
+ats = "lever"
+slug = "fly"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Galileo"
+ats = "greenhouse"
+board = "galileo"
+profiles = ["engineer"]
+
+[[companies]]
+name = "GitLab"
+ats = "greenhouse"
+board = "gitlab"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Grafana Labs"
+ats = "greenhouse"
+board = "grafanalabs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Guild"
+ats = "greenhouse"
+board = "guild"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Gusto"
+ats = "greenhouse"
+board = "gusto"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Handshake"
+ats = "ashby"
+board = "handshake"
+profiles = ["analyst"]
+
+[[companies]]
+name = "HawkEye 360"
+ats = "greenhouse"
+board = "hawkeye360"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Headway"
+ats = "ashby"
+board = "headway"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Hermeus"
+ats = "lever"
+slug = "hermeus"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Hex"
+ats = "ashby"
+board = "hex"
+profiles = ["engineer", "analyst"]
+
+[[companies]]
+name = "Hightouch"
+ats = "greenhouse"
+board = "hightouch"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ideogram"
+ats = "ashby"
+board = "ideogram"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Imbue"
+ats = "greenhouse"
+board = "imbue"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Included Health"
+ats = "lever"
+slug = "includedhealth"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Inflection AI"
+ats = "greenhouse"
+board = "inflectionai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Instacart"
+ats = "greenhouse"
+board = "instacart"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Instructure"
+ats = "ashby"
+board = "instructure"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Khan Academy"
+ats = "greenhouse"
+board = "khanacademy"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Klaviyo"
+ats = "greenhouse"
+board = "klaviyo"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Kodiak Robotics"
+ats = "greenhouse"
+board = "kodiak"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Labelbox"
+ats = "greenhouse"
+board = "labelbox"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Lambda"
+ats = "ashby"
+board = "lambda"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Linear"
+ats = "ashby"
+board = "linear"
+profiles = ["engineer"]
+
+[[companies]]
+name = "LlamaIndex"
+ats = "ashby"
+board = "llamaindex"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Locus Robotics"
+ats = "greenhouse"
+board = "locusrobotics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Lovable"
+ats = "ashby"
+board = "lovable"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Luma AI"
+ats = "ashby"
+board = "lumaai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Lyra Health"
+ats = "lever"
+slug = "lyrahealth"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Maven Clinic"
+ats = "greenhouse"
+board = "mavenclinic"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Mercury"
+ats = "greenhouse"
+board = "mercury"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Midjourney"
+ats = "ashby"
+board = "midjourney"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Mixpanel"
+ats = "greenhouse"
+board = "mixpanel"
+profiles = ["analyst"]
+
+[[companies]]
+name = "MongoDB"
+ats = "greenhouse"
+board = "mongodb"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Navan"
+ats = "greenhouse"
+board = "tripactions"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Nebius"
+ats = "greenhouse"
+board = "nebius"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Neo4j"
+ats = "greenhouse"
+board = "neo4j"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Neon"
+ats = "lever"
+slug = "neon"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Netlify"
+ats = "greenhouse"
+board = "netlify"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Newsela"
+ats = "greenhouse"
+board = "newsela"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Nextdoor"
+ats = "greenhouse"
+board = "nextdoor"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Nuro"
+ats = "greenhouse"
+board = "nuro"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Observe.AI"
+ats = "greenhouse"
+board = "observeai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Omada Health"
+ats = "greenhouse"
+board = "omadahealth"
+profiles = ["analyst"]
+
+[[companies]]
+name = "OpenEvidence"
+ats = "ashby"
+board = "openevidence"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Peloton"
+ats = "greenhouse"
+board = "peloton"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Pika"
+ats = "ashby"
+board = "pika"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Pinecone"
+ats = "ashby"
+board = "pinecone"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Plaid"
+ats = "ashby"
+board = "plaid"
+profiles = ["analyst", "engineer"]
+
+[[companies]]
+name = "Planet"
+ats = "greenhouse"
+board = "planetlabs"
+profiles = ["engineer"]
+
+[[companies]]
+name = "PlanetScale"
+ats = "greenhouse"
+board = "planetscale"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Poolside"
+ats = "ashby"
+board = "poolside"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Prefect"
+ats = "ashby"
+board = "prefect"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Primer AI"
+ats = "ashby"
+board = "primer"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Qualtrics"
+ats = "greenhouse"
+board = "qualtrics"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Railway"
+ats = "ashby"
+board = "railway"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Rasa"
+ats = "ashby"
+board = "rasa"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Recursion"
+ats = "greenhouse"
+board = "recursionpharmaceuticals"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Redis"
+ats = "ashby"
+board = "redis"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Reka"
+ats = "ashby"
+board = "reka"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Relativity Space"
+ats = "greenhouse"
+board = "relativity"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Render"
+ats = "ashby"
+board = "render"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Replit"
+ats = "ashby"
+board = "replit"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Ro"
+ats = "lever"
+slug = "ro"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Roblox"
+ats = "greenhouse"
+board = "roblox"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Rocket Lab"
+ats = "greenhouse"
+board = "rocketlab"
+profiles = ["engineer"]
+
+[[companies]]
+name = "RunPod"
+ats = "ashby"
+board = "runpod"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Runway"
+ats = "ashby"
+board = "runway"
+profiles = ["engineer"]
+
+[[companies]]
+name = "SambaNova"
+ats = "greenhouse"
+board = "sambanovasystems"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Shield AI"          # moved off Ashby in Sept 2026; the old shield-ai board now 404s
+ats = "lever"
+slug = "shieldai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Sigma Computing"
+ats = "greenhouse"
+board = "sigmacomputing"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Skydio"
+ats = "ashby"
+board = "skydio"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Snorkel AI"
+ats = "greenhouse"
+board = "snorkelai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Snowflake"
+ats = "ashby"
+board = "snowflake"
+profiles = ["engineer", "analyst"]
+
+[[companies]]
+name = "SoFi"
+ats = "greenhouse"
+board = "sofi"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Speechmatics"
+ats = "greenhouse"
+board = "speechmatics"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Squarespace"
+ats = "greenhouse"
+board = "squarespace"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Stability AI"
+ats = "greenhouse"
+board = "stabilityai"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Starburst"
+ats = "greenhouse"
+board = "starburst"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Strava"
+ats = "ashby"
+board = "strava"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Supabase"
+ats = "ashby"
+board = "supabase"
+profiles = ["engineer"]
+
+[[companies]]
+name = "SurveyMonkey"
+ats = "ashby"
+board = "surveymonkey"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Synthesia"
+ats = "ashby"
+board = "synthesia"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Tavily"
+ats = "ashby"
+board = "tavily"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Temporal"
+ats = "ashby"
+board = "temporal"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Tenstorrent"
+ats = "greenhouse"
+board = "tenstorrent"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Thumbtack"
+ats = "ashby"
+board = "thumbtack"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Toast"
+ats = "greenhouse"
+board = "toast"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Two Six Technologies"
+ats = "greenhouse"
+board = "twosixtechnologies"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Typeface"
+ats = "greenhouse"
+board = "typeface"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Udemy"
+ats = "greenhouse"
+board = "udemy"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Unstructured"
+ats = "ashby"
+board = "unstructured"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Varda"
+ats = "greenhouse"
+board = "vardaspace"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Vectara"
+ats = "greenhouse"
+board = "vectara"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Vercel"
+ats = "greenhouse"
+board = "vercel"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Warp"
+ats = "ashby"
+board = "warp"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Waymo"
+ats = "greenhouse"
+board = "waymo"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Wayve"
+ats = "greenhouse"
+board = "wayve"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Weaviate"
+ats = "ashby"
+board = "weaviate"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Zapier"
+ats = "ashby"
+board = "zapier"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Zipline"
+ats = "greenhouse"
+board = "flyzipline"
+profiles = ["engineer"]
+
+[[companies]]
+name = "Zocdoc"
+ats = "greenhouse"
+board = "zocdoc"
+profiles = ["analyst"]
+
+[[companies]]
+name = "Zoox"
+ats = "lever"
+slug = "zoox"
+profiles = ["engineer"]
+
+[[companies]]
+name = "d-Matrix"
+ats = "ashby"
+board = "d-matrix"
+profiles = ["engineer"]
+
+[[companies]]
+name = "insitro"
+ats = "ashby"
+board = "insitro"
+profiles = ["analyst"]

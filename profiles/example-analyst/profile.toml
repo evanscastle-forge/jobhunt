@@ -1,0 +1,64 @@
+# Your answers for application forms. The apply assistant only ever fills fields it can map to
+# something in this file; anything else is flagged for you to answer by hand.
+# Write the free-text parts in your own words — they get pasted verbatim.
+#
+# This is an EXAMPLE with invented details. Copy the folder to profiles/<your-name>/ and edit it;
+# real profiles are gitignored so nobody's contact details or demographics end up in the repo.
+
+[identity]
+first_name = "Sam"
+last_name = "Okafor"
+email = "sam.okafor@example.com"
+phone = "5555550102"
+location = "Columbus, OH"
+country = "United States"
+current_company = "Example Health"
+current_title = "Senior Data Analyst"
+
+[links]
+linkedin = ""        # e.g. https://www.linkedin.com/in/...
+github = ""
+website = ""
+
+[documents]
+resume = "Sam_Okafor_Resume.pdf"   # relative to this profile folder
+cover_letter = ""                     # optional PDF; leave blank to skip file-type cover letter fields
+
+[answers]
+work_authorization = "Yes"     # "Are you authorized to work in the US?"
+sponsorship = "No"             # "Will you now or in the future require sponsorship?"
+citizenship = "Yes"            # "Are you a US citizen?"
+clearance_option = "No"        # yes/no dropdowns: "Do you hold an active security clearance?"
+clearance = "No clearance held."
+salary_expectation = ""        # leave blank to be asked, or e.g. "185000"
+how_heard = "Company careers page"
+start_date = ""                # e.g. "Two weeks after offer"
+notice_period = "2 weeks"
+relocation = "No"
+remote_preference = "Hybrid"
+travel = "Yes, occasional travel is fine (roughly up to 20%)."
+years_experience = "6"
+highest_degree = "Master's"
+previously_employed = "No"
+eeo = "decline"                # decline -> picks "Decline to self-identify" where offered; skip -> leaves demographics blank
+languages = ["English"]        # checkbox groups like "languages you speak"
+
+# Facts about you live in notes/about.md (edit them on the dashboard's About page). voice_samples
+# are 2-4 short paragraphs you actually wrote so drafted answers sound like you.
+voice_samples = [
+  # paste 2-4 short paragraphs you've actually written (emails, PR descriptions, a cover letter) so drafts sound like you
+]
+
+# Checkbox groups and multi-choice questions, matched by regex against the question text:
+# option text (or a list of them) to tick. Citizenship / export-control attestations and
+# language lists are handled automatically; add anything else you meet here.
+[answers.choices]
+# "which (products|areas) interest you" = ["Platform", "Agents"]
+
+# Free-text questions, matched by regex against the question text (case-insensitive).
+# {company} and {title} are substituted. These are pasted verbatim, so keep them in your voice.
+[answers.custom]
+# "why (do you want|are you interested|.*excited).*" = "..."
+# "cover letter" = "..."
+# "tell us about (a|an) (project|time).*" = "..."
+# "anything else|additional information" = "..."

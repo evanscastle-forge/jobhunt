@@ -1,0 +1,45 @@
+# Example profile: an AI / forward-deployed engineer. Copy this folder to profiles/<your-name>/
+# and edit it. Layered over ../../config.toml: any table here overrides the shared one key-by-key;
+# [[companies]] entries here are added to the shared list.
+
+display_name = "Alex"
+board_tags = ["engineer"]       # boards in config.toml tagged profiles = ["engineer"]
+# Parked so the examples cost nothing: a scan skips them entirely. Copy this folder to
+# profiles/<your-name>/, then set enabled = true there.
+enabled = false
+
+[search]
+# A posting is kept only if its title matches a tier-1 or tier-2 term and no exclude term.
+title_tier1 = [
+  "forward deployed", "forward-deployed", "fde", "applied ai", "applied machine learning",
+  "solutions engineer", "solution engineer", "solutions architect", "solution architect",
+  "customer engineer", "deployment engineer", "deployment strategist", "implementation engineer",
+  "field engineer", "product engineer", "member of technical staff", "ai engineer", "genai engineer",
+]
+title_tier2 = [
+  "machine learning engineer", "ml engineer", "agent", "llm", "research engineer", "applied scientist",
+  "autonomy", "autonomous", "mission", "search", "generative", "prototyp", "innovation", "defense",
+  "technical staff", "developer advocate", "developer relations", "ai platform", "reinforcement",
+]
+title_exclude = [
+  "intern", "new grad", "early career", "university", "phd", "recruit", "account executive", "account manager",
+  "marketing", "counsel", "tutor", "sales", "support", "designer", "analyst", "hardware", "electrical",
+  "mechanical", "test engineer", "qa", "security engineer", "devops", "sre", "site reliability", "data engineer",
+  "frontend", "front-end", "front end", "ios", "android", "mobile", "product manager", "program manager",
+  "manager", "director", "head of", "vp", "vice president", "chief", "controller", "finance", "accountant",
+  "legal", "operations analyst", "technician", "writer", "editor", "coordinator",
+]
+require_title_match = true
+# Employers to drop no matter which source lists them, matched as a substring of the company name.
+# Useful for your current employer, or anywhere you have already decided against.
+company_exclude = []
+
+[location]
+# The drive you would make every working day. Past it you could still reach an office for a day on
+# site once or twice a month; a posting that demands more presence than you could give is retired by
+# the reach gate, not merely ranked lower.
+daily_miles = 60
+keep_us_onsite = false   # drop onsite beyond radius_miles; inside it, roles rank with the rest
+# Places the gazetteer cannot resolve from the name alone; anything listed is treated as monthly_miles away.
+commutable = ["central ohio", "short north", "polaris parkway"]
+

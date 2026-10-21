@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pat Example</title>
+<style>
+  @page { size: Letter; margin: 0.6in 0.75in; }
+  body { font-family: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif; font-size: 11pt; line-height: 1.25; color: #000; margin: 0; }
+  header { text-align: center; }
+  h1 { font-size: 16pt; margin: 0 0 2pt; }
+  header p { margin: 0; }
+  h2 { font-size: 11pt; margin: 12pt 0 4pt; }
+  h3 { font-size: 11pt; font-weight: bold; margin: 8pt 0 2pt; }
+  p { margin: 0 0 4pt; }
+  ul { margin: 0 0 4pt; padding-left: 22pt; }
+  li { margin: 0 0 1pt; }
+  article { break-inside: avoid; }
+  [data-slot]:empty { display: none; }
+  a { color: inherit; text-decoration: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pat Example</h1>
+  <p data-slot="headline"></p>
+  <p>pat@example.com | Columbus, OH | (555) 010-0000</p>
+</header>
+<section data-slot="skills"></section>
+<section data-section="work">
+  <h2>WORK EXPERIENCE</h2>
+  <article data-job="acme">
+    <h3>Senior Machine Learning Engineer, Acme (2024 – Present)</h3>
+    <ul>
+      <li>Created Lantern, an agentic system for resolving shipping questions from customers.</li>
+      <li>Lantern posts updates to Slack and reads context from Github <b>(read-only)</b>.</li>
+      <li>Built a retrieval pipeline in Python with Ray for internal search.</li>
+    </ul>
+  </article>
+  <article data-job="globex">
+    <h3>Machine Learning Engineer, Globex (2021 – 2024)</h3>
+    <ul data-fixed>
+      <li>Shipped a reinforcement learning model for warehouse picking robots.</li>
+      <li>Wrote the agentic system that plans delivery routes; see <a href="https://example.com/portfolio">example.com/portfolio</a>.</li>
+    </ul>
+  </article>
+</section>
+<section data-section="education">
+  <h2>EDUCATION</h2>
+  <p>State University — B.S. in Computer Science (2017–2021)</p>
+</section>
+</body>
+</html>

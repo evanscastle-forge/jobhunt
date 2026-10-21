@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><title>Workday-like apply flow</title>
+<style> .step { display: none } .on { display: block } #click_filter { position: absolute; inset: 0; } .wrap { position: relative; display: inline-block } </style>
+</head><body>
+<!-- mimics Workday: stable data-automation-id attributes, a click_filter over its buttons, a honeypot,
+     listbox buttons for dropdowns, per-page Next that refuses until required fields are set, Review with Submit -->
+<ol data-automation-id="progressBar"><li data-automation-id="progressBarActiveStep" id="active">Job</li></ol>
+
+<div id="job" class="step on">
+  <h2 data-automation-id="jobPostingHeader">Machine Learning Engineer</h2>
+  <a href="#" data-automation-id="adventureButton" onclick="show('popup'); return false">Apply</a>
+</div>
+<div id="popup" class="step">
+  <a href="#" data-automation-id="autofillWithResume" onclick="show('account', 'Create Account/Sign In'); return false">Autofill with Resume</a>
+  <a href="#" data-automation-id="applyManually" onclick="show('account', 'Create Account/Sign In'); return false">Apply Manually</a>
+</div>
+<div id="account" class="step">
+  <label for="em">Email Address*</label><input id="em" data-automation-id="email">
+  <label for="pw">Password*</label><input id="pw" type="password" data-automation-id="password">
+  <label for="vp">Verify New Password*</label><input id="vp" type="password" data-automation-id="verifyPassword">
+  <input data-automation-id="beecatcher" name="beecatcher" style="width:2px;height:2px">
+  <span class="wrap"><button type="button" data-automation-id="createAccountSubmitButton">Create Account</button>
+    <div id="click_filter" data-automation-id="click_filter" onclick="createAccount()"></div></span>
+  <button type="button" data-automation-id="signInLink">Sign In</button>
+</div>
+<div id="verify" class="step"><p>Please verify your email. We sent a verification link to your inbox.</p></div>
+<div id="info" class="step">
+  <label for="fn">First Name*</label><input id="fn" required aria-required="true">
+  <label for="ln">Last Name*</label><input id="ln" required aria-required="true">
+  <label for="country">Country*</label>
+  <button id="country" type="button" aria-haspopup="listbox" onclick="document.getElementById('countries').style.display='block'">Select One</button>
+  <ul id="countries" role="listbox" style="display:none">
+    <li role="option" onclick="pick(this)">Canada</li><li role="option" onclick="pick(this)">United States</li></ul>
+  <label for="ph">Phone Number</label><input id="ph">
+</div>
+<div id="questions" class="step">
+  <label for="auth">Are you legally authorized to work in the United States?*</label>
+  <select id="auth"><option value="">Select One</option><option>Yes</option><option>No</option></select>
+  <div data-automation-id="errorMessage" id="qerr" style="display:none">Error: Are you legally authorized to work in the United States? is required</div>
+</div>
+<div id="review" class="step"><p>Review your application.</p></div>
+
+<div id="nav" style="display:none"><button type="button" data-automation-id="bottom-navigation-next-button" id="next" onclick="next()">Save and Continue</button></div>
+<script>
+  window.__submitted = false;
+  const needVerify = location.search.includes('verify=1');
+  function show(id, step) { document.querySelectorAll('.step').forEach(s => s.classList.remove('on')); document.getElementById(id).classList.add('on');
+    if (step) document.getElementById('active').textContent = 'current step ' + step;
+    document.getElementById('nav').style.display = ['info', 'questions', 'review'].includes(id) ? 'block' : 'none';
+    document.getElementById('next').textContent = id === 'review' ? 'Submit' : 'Save and Continue'; }
+  function createAccount() {
+    if (document.querySelector('[name=beecatcher]').value) { document.body.dataset.bot = '1'; return; }
+    const pw = document.getElementById('pw').value;
+    if (!document.getElementById('em').value || pw.length < 8 || pw !== document.getElementById('vp').value) return;
+    needVerify ? show('verify') : show('info', 'My Information'); }
+  function pick(li) { document.getElementById('country').textContent = li.textContent; li.parentElement.style.display = 'none'; }
+  function next() {
+    const on = document.querySelector('.step.on').id;
+    if (on === 'info') { if (!document.getElementById('fn').value || document.getElementById('country').textContent === 'Select One') return; show('questions', 'Application Questions'); }
+    else if (on === 'questions') { if (!document.getElementById('auth').value) { document.getElementById('qerr').style.display = 'block'; document.getElementById('auth').setAttribute('aria-invalid', 'true'); return; } show('review', 'Review'); }
+    else if (on === 'review') { window.__submitted = true; document.body.dataset.submitted = '1'; } }
+</script>
+</body></html>

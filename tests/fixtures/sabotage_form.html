@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><title>Engineer - Example</title></head>
+<body>
+<form id="application-form">
+  <label for="first">First Name *</label><input id="first" name="first" required>
+  <label for="last">Last Name *</label><input id="last" name="last" required>
+  <label for="email">Email *</label><input id="email" name="email" type="email" required>
+  <!-- a field that silently throws away what was typed: the adapter "succeeds", the page disagrees -->
+  <label for="phone">Phone *</label><input id="phone" name="phone" required>
+  <script>
+    document.getElementById('phone').addEventListener('input', e => setTimeout(() => { e.target.value = ''; }, 50));
+  </script>
+  <label for="resume">Resume *</label><input id="resume" name="resume" type="file" required>
+  <label for="elig">Clearance eligibility *</label>
+  <select id="elig" name="elig" required><option value="">Select...</option><option>Yes</option><option>No</option></select>
+  <label for="travel">Are you willing to travel up to 50% of the time? *</label>
+  <select id="travel" name="travel" required><option value="">Select...</option><option>Yes</option><option>No</option></select>
+  <label for="na">Have you ever worked for a government agency? *</label>
+  <select id="na" name="na" required><option value="">Select...</option><option>Not applicable</option><option>No</option><option>Yes</option></select>
+  <label for="bound">Are you bound by any agreements with a current or former employer? *</label>
+  <select id="bound" name="bound" required><option value="">Select...</option><option>Yes</option><option>No</option></select>
+  <label for="boundx">If yes, please explain</label><textarea id="boundx" name="boundx"></textarea>
+  <label for="gpa">What was your undergraduate GPA? *</label><input id="gpa" name="gpa" required>
+  <button type="button">Submit application</button>
+</form>
+</body></html>

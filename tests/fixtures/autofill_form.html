@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><title>Engineer - Example (resume autofill)</title></head>
+<body>
+<!-- an ATS that parses the uploaded resume into the form, like Lever and Ashby. Its parser gets the
+     name right, the phone in its own format, and the current company wrong. -->
+<form id="application-form">
+  <label for="resume">Resume *</label><input id="resume" name="resume" type="file" required>
+  <label for="name">Full name *</label><input id="name" name="name" required>
+  <label for="email">Email *</label><input id="email" name="email" type="email" required>
+  <label for="phone">Phone</label><input id="phone" name="phone">
+  <label for="org">Current company</label><input id="org" name="org">
+  <label for="school">School</label><input id="school" name="school">
+  <button type="button">Submit application</button>
+</form>
+<script>
+  document.getElementById('resume').addEventListener('change', () => setTimeout(() => {
+    const set = (id, v) => { const e = document.getElementById(id); if (!e.value) e.value = v; };
+    set('name', 'Alex Rivera'); set('phone', '(555) 010-0000'); set('org', 'Vandelay Industries');
+    set('school', 'Example State University');
+  }, 200));
+</script>
+</body></html>

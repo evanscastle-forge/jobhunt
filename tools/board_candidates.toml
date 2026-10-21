@@ -1,0 +1,1744 @@
+# Candidate company boards for tools/probe_boards.py. Each entry is tried on Greenhouse, Lever and Ashby
+# with every slug listed; the first feed that answers with postings wins. `profiles` tags which kind of
+# search sees it (a profile folder name or one of its `board_tags`).
+
+# --- AI labs, infra, agents
+[[candidates]]
+name = "Mistral AI"
+slugs = ["mistral", "mistralai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hugging Face"
+slugs = ["huggingface"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Weights & Biases"
+slugs = ["wandb", "weightsandbiases"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Anyscale"
+slugs = ["anyscale"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Replit"
+slugs = ["replit"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cursor"
+slugs = ["anysphere", "cursor"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Vercel"
+slugs = ["vercel"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Supabase"
+slugs = ["supabase"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Pinecone"
+slugs = ["pinecone", "hypercube"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Weaviate"
+slugs = ["weaviate"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Chroma"
+slugs = ["chroma", "trychroma"]
+profiles = ["engineer"]
+[[candidates]]
+name = "LlamaIndex"
+slugs = ["llamaindex"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Fireworks AI"
+slugs = ["fireworksai", "fireworks"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Groq"
+slugs = ["groq"]
+profiles = ["engineer"]
+[[candidates]]
+name = "SambaNova"
+slugs = ["sambanova", "sambanovasystems"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Lambda"
+slugs = ["lambda", "lambdalabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Crusoe"
+slugs = ["crusoe", "crusoeenergy"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Nebius"
+slugs = ["nebius"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Snorkel AI"
+slugs = ["snorkelai", "snorkel"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Labelbox"
+slugs = ["labelbox"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Galileo"
+slugs = ["galileo", "rungalileo"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Arize"
+slugs = ["arize", "arizeai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Braintrust"
+slugs = ["braintrust", "braintrustdata"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Humanloop"
+slugs = ["humanloop"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Adept"
+slugs = ["adept", "adeptai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Imbue"
+slugs = ["imbue"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Reka"
+slugs = ["reka", "rekaai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "AI21 Labs"
+slugs = ["ai21", "ai21labs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Character.AI"
+slugs = ["character", "characterai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Inflection AI"
+slugs = ["inflectionai", "inflection"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Scale AI"
+slugs = ["scaleai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Glean"
+slugs = ["gleanwork"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Notion"
+slugs = ["notion"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Retool"
+slugs = ["retool"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Airtable"
+slugs = ["airtable"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Zapier"
+slugs = ["zapier"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Datadog"
+slugs = ["datadog"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Snowflake"
+slugs = ["snowflake"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "dbt Labs"
+slugs = ["dbtlabsinc", "dbtlabs", "fishtownanalytics"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "Hex"
+slugs = ["hex", "hextech"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "Sigma Computing"
+slugs = ["sigmacomputing"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Mode Analytics"
+slugs = ["modeanalytics"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Tecton"
+slugs = ["tecton"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hightouch"
+slugs = ["hightouch"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Census"
+slugs = ["census", "getcensus"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Airbyte"
+slugs = ["airbyte"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Fivetran"
+slugs = ["fivetran"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "Astronomer"
+slugs = ["astronomer"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Prefect"
+slugs = ["prefect"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Dagster Labs"
+slugs = ["dagsterlabs", "elementl"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Temporal"
+slugs = ["temporal", "temporaltechnologies"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Grafana Labs"
+slugs = ["grafanalabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "HashiCorp"
+slugs = ["hashicorp"]
+profiles = ["engineer"]
+[[candidates]]
+name = "GitLab"
+slugs = ["gitlab"]
+profiles = ["engineer"]
+[[candidates]]
+name = "MongoDB"
+slugs = ["mongodb"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Confluent"
+slugs = ["confluent"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Redis"
+slugs = ["redis", "redislabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Elastic"
+slugs = ["elastic"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Neo4j"
+slugs = ["neo4j"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cockroach Labs"
+slugs = ["cockroachlabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "PlanetScale"
+slugs = ["planetscale"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Neon"
+slugs = ["neon", "neondatabase"]
+profiles = ["engineer"]
+[[candidates]]
+name = "ClickHouse"
+slugs = ["clickhouse"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Starburst"
+slugs = ["starburst", "starburstdata"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Dremio"
+slugs = ["dremio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Sourcegraph"
+slugs = ["sourcegraph"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Codeium"
+slugs = ["codeium", "exafunction"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Magic"
+slugs = ["magic", "magicdev"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Poolside"
+slugs = ["poolside"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cognition"
+slugs = ["cognition"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Factory"
+slugs = ["factory", "factoryai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Sierra"
+slugs = ["sierra"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Decagon"
+slugs = ["decagon"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cresta"
+slugs = ["cresta"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Forethought"
+slugs = ["forethought", "forethoughtai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Ada"
+slugs = ["ada", "adasupport"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Observe.AI"
+slugs = ["observeai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "AssemblyAI"
+slugs = ["assemblyai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Deepgram"
+slugs = ["deepgram"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cartesia"
+slugs = ["cartesia"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Speechmatics"
+slugs = ["speechmatics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Synthesia"
+slugs = ["synthesia"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Descript"
+slugs = ["descript"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Luma AI"
+slugs = ["lumaai", "luma"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Pika"
+slugs = ["pika", "pikalabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Midjourney"
+slugs = ["midjourney"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Stability AI"
+slugs = ["stabilityai", "stability"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Ideogram"
+slugs = ["ideogram"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Wayve"
+slugs = ["wayve"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Waymo"
+slugs = ["waymo"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Aurora"
+slugs = ["aurora", "aurorainnovation"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Nuro"
+slugs = ["nuro"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Zoox"
+slugs = ["zoox"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Kodiak Robotics"
+slugs = ["kodiak", "kodiakrobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Gatik"
+slugs = ["gatik"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Applied Intuition"
+slugs = ["applied", "appliedintuition"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Skydio"
+slugs = ["skydio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Shield AI"
+slugs = ["shieldai", "shield-ai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Anduril"
+slugs = ["andurilindustries"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Saronic"
+slugs = ["saronic", "saronictechnologies"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Epirus"
+slugs = ["epirus", "epirusinc"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hermeus"
+slugs = ["hermeus"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hadrian"
+slugs = ["hadrian"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rebellion Defense"
+slugs = ["rebelliondefense", "rebellion"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Second Front Systems"
+slugs = ["secondfront", "secondfrontsystems", "2f"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Govini"
+slugs = ["govini"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Primer AI"
+slugs = ["primer", "primerai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Vannevar Labs"
+slugs = ["vannevarlabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Scale AI Public Sector"
+slugs = ["scaleai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Palantir"
+slugs = ["palantir"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Two Six Technologies"
+slugs = ["twosixtechnologies", "twosix"]
+profiles = ["engineer"]
+[[candidates]]
+name = "BigBear.ai"
+slugs = ["bigbearai", "bigbear"]
+profiles = ["engineer"]
+[[candidates]]
+name = "HawkEye 360"
+slugs = ["hawkeye360"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Capella Space"
+slugs = ["capellaspace"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Planet"
+slugs = ["planet", "planetlabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Umbra"
+slugs = ["umbra", "umbralab"]
+profiles = ["engineer"]
+[[candidates]]
+name = "True Anomaly"
+slugs = ["trueanomaly"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Varda"
+slugs = ["varda", "vardaspace"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Relativity Space"
+slugs = ["relativity", "relativityspace"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rocket Lab"
+slugs = ["rocketlab"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Firefly Aerospace"
+slugs = ["fireflyaerospace", "firefly"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Astranis"
+slugs = ["astranis"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Boston Dynamics"
+slugs = ["bostondynamics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Figure AI"
+slugs = ["figureai", "figure"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Agility Robotics"
+slugs = ["agilityrobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Apptronik"
+slugs = ["apptronik"]
+profiles = ["engineer"]
+[[candidates]]
+name = "1X"
+slugs = ["1x", "1xtechnologies"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Physical Intelligence"
+slugs = ["physicalintelligence"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Covariant"
+slugs = ["covariant", "covariantai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Dexterity"
+slugs = ["dexterity"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Symbotic"
+slugs = ["symbotic"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Locus Robotics"
+slugs = ["locusrobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Zipline"
+slugs = ["zipline", "flyzipline"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Matternet"
+slugs = ["matternet"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Overland AI"
+slugs = ["overlandai", "overland"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Forterra"
+slugs = ["forterra", "forterrainc"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Scale Robotics"
+slugs = ["scalerobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cohere"
+slugs = ["cohere"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Perplexity"
+slugs = ["perplexity", "perplexityai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "You.com"
+slugs = ["youdotcom", "you"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Harvey"
+slugs = ["harvey"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hebbia"
+slugs = ["hebbia", "hebbiaai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rogo"
+slugs = ["rogo", "rogodata"]
+profiles = ["engineer"]
+[[candidates]]
+name = "EvenUp"
+slugs = ["evenup", "evenuplaw"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Abridge"
+slugs = ["abridge"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Ambience Healthcare"
+slugs = ["ambiencehealthcare", "ambience"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hippocratic AI"
+slugs = ["hippocraticai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "OpenEvidence"
+slugs = ["openevidence"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Tempus"
+slugs = ["tempus", "tempuslabs"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "Flatiron Health"
+slugs = ["flatironhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Datavant"
+slugs = ["datavant"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Komodo Health"
+slugs = ["komodohealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Truveta"
+slugs = ["truveta"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Aledade"
+slugs = ["aledade"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Oscar Health"
+slugs = ["oscar", "oscarhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Clover Health"
+slugs = ["cloverhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Devoted Health"
+slugs = ["devoted", "devotedhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Cityblock Health"
+slugs = ["cityblock", "cityblockhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Headway"
+slugs = ["headway"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Spring Health"
+slugs = ["springhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Lyra Health"
+slugs = ["lyrahealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Hinge Health"
+slugs = ["hingehealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Omada Health"
+slugs = ["omadahealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Ro"
+slugs = ["ro"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Hims & Hers"
+slugs = ["hims", "himshers"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Maven Clinic"
+slugs = ["mavenclinic"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Carbon Health"
+slugs = ["carbonhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Included Health"
+slugs = ["includedhealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Color"
+slugs = ["color"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Verily"
+slugs = ["verily"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Benchling"
+slugs = ["benchling"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Recursion"
+slugs = ["recursion", "recursionpharmaceuticals"]
+profiles = ["analyst"]
+[[candidates]]
+name = "insitro"
+slugs = ["insitro"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Genentech"
+slugs = ["genentech"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Moderna"
+slugs = ["moderna"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Cedar"
+slugs = ["cedar"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Zocdoc"
+slugs = ["zocdoc"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Grow Therapy"
+slugs = ["growtherapy"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Alma"
+slugs = ["helloalma", "alma"]
+profiles = ["analyst"]
+[[candidates]]
+name = "RTI International"
+slugs = ["rti"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Mathematica"
+slugs = ["mathematica", "mathematicampr"]
+profiles = ["analyst"]
+[[candidates]]
+name = "NORC"
+slugs = ["norc"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Westat"
+slugs = ["westat"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Abt Global"
+slugs = ["abtassociates", "abtglobal", "abt"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Urban Institute"
+slugs = ["urbaninstitute", "urban"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Pew Research Center"
+slugs = ["pewresearch", "pew"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Brookings"
+slugs = ["brookings"]
+profiles = ["analyst"]
+[[candidates]]
+name = "RAND"
+slugs = ["rand", "randcorporation"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "MITRE"
+slugs = ["mitre"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "IDA"
+slugs = ["ida", "idaorg"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "CNA"
+slugs = ["cna"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "ICF"
+slugs = ["icf"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Guidehouse"
+slugs = ["guidehouse"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Booz Allen"
+slugs = ["boozallen", "boozallenhamilton"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "Amplitude"
+slugs = ["amplitude"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Mixpanel"
+slugs = ["mixpanel"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Statsig"
+slugs = ["statsig"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Eppo"
+slugs = ["eppo", "geteppo"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Optimizely"
+slugs = ["optimizely"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Qualtrics"
+slugs = ["qualtrics"]
+profiles = ["analyst"]
+[[candidates]]
+name = "SurveyMonkey"
+slugs = ["surveymonkey", "momentive"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Coursera"
+slugs = ["coursera"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Duolingo"
+slugs = ["duolingo"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Khan Academy"
+slugs = ["khanacademy"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Chegg"
+slugs = ["chegg"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Udemy"
+slugs = ["udemy"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Guild"
+slugs = ["guild", "guildeducation"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Handshake"
+slugs = ["handshake", "joinhandshake"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Instructure"
+slugs = ["instructure"]
+profiles = ["analyst"]
+[[candidates]]
+name = "2U"
+slugs = ["2u"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Newsela"
+slugs = ["newsela"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Amplify"
+slugs = ["amplify", "amplifyeducation"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Panorama Education"
+slugs = ["panoramaed", "panoramaeducation"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Stripe"
+slugs = ["stripe"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "Plaid"
+slugs = ["plaid"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "Brex"
+slugs = ["brex"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Ramp"
+slugs = ["ramp"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "Mercury"
+slugs = ["mercury"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Affirm"
+slugs = ["affirm"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Chime"
+slugs = ["chime"]
+profiles = ["analyst"]
+[[candidates]]
+name = "SoFi"
+slugs = ["sofi"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Robinhood"
+slugs = ["robinhood"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Coinbase"
+slugs = ["coinbase"]
+profiles = ["analyst", "engineer"]
+[[candidates]]
+name = "Kraken"
+slugs = ["kraken", "krakenfx"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Marqeta"
+slugs = ["marqeta"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Toast"
+slugs = ["toast"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Gusto"
+slugs = ["gusto"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Rippling"
+slugs = ["rippling"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Deel"
+slugs = ["deel"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Carta"
+slugs = ["carta"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Navan"
+slugs = ["navan", "tripactions"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Lyft"
+slugs = ["lyft"]
+profiles = ["analyst"]
+[[candidates]]
+name = "DoorDash"
+slugs = ["doordash", "doordashusa"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Instacart"
+slugs = ["instacart"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Airbnb"
+slugs = ["airbnb"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Reddit"
+slugs = ["reddit"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Pinterest"
+slugs = ["pinterest"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Snap"
+slugs = ["snapchat", "snap"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Discord"
+slugs = ["discord"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Twitch"
+slugs = ["twitch"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Roblox"
+slugs = ["roblox"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Spotify"
+slugs = ["spotify"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Squarespace"
+slugs = ["squarespace"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Etsy"
+slugs = ["etsy"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Wayfair"
+slugs = ["wayfair"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Peloton"
+slugs = ["peloton"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Strava"
+slugs = ["strava"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Calm"
+slugs = ["calm"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Headspace"
+slugs = ["headspace", "headspacehealth"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Dropbox"
+slugs = ["dropbox"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Figma"
+slugs = ["figma"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Canva"
+slugs = ["canva"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Grammarly"
+slugs = ["grammarly"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Asana"
+slugs = ["asana"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Atlassian"
+slugs = ["atlassian"]
+profiles = ["analyst"]
+[[candidates]]
+name = "HubSpot"
+slugs = ["hubspot"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Klaviyo"
+slugs = ["klaviyo"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Braze"
+slugs = ["braze"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Attentive"
+slugs = ["attentive", "attentivemobile"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Yelp"
+slugs = ["yelp"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Nextdoor"
+slugs = ["nextdoor"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Zillow"
+slugs = ["zillow", "zillowgroup"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Redfin"
+slugs = ["redfin"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Opendoor"
+slugs = ["opendoor"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Thumbtack"
+slugs = ["thumbtack"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Faire"
+slugs = ["faire"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Whatnot"
+slugs = ["whatnot"]
+profiles = ["analyst"]
+[[candidates]]
+name = "Cloudflare"
+slugs = ["cloudflare"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Fastly"
+slugs = ["fastly"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Netlify"
+slugs = ["netlify"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Render"
+slugs = ["render"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Fly.io"
+slugs = ["fly", "flyio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Railway"
+slugs = ["railway", "railwayapp"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Modal"
+slugs = ["modal", "modallabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Baseten"
+slugs = ["baseten"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Together AI"
+slugs = ["togetherai", "together"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Replicate"
+slugs = ["replicate"]
+profiles = ["engineer"]
+[[candidates]]
+name = "RunPod"
+slugs = ["runpod"]
+profiles = ["engineer"]
+[[candidates]]
+name = "OctoAI"
+slugs = ["octoml", "octoai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Cerebras"
+slugs = ["cerebras", "cerebrassystems"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Etched"
+slugs = ["etched"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Tenstorrent"
+slugs = ["tenstorrent"]
+profiles = ["engineer"]
+[[candidates]]
+name = "d-Matrix"
+slugs = ["dmatrix", "d-matrix"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Runway"
+slugs = ["runwayml", "runway"]
+profiles = ["engineer"]
+[[candidates]]
+name = "ElevenLabs"
+slugs = ["elevenlabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Writer"
+slugs = ["writer"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Jasper"
+slugs = ["jasper", "jasperai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Typeface"
+slugs = ["typeface"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Moveworks"
+slugs = ["moveworks"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Aisera"
+slugs = ["aisera"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Kore.ai"
+slugs = ["koreai", "kore"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rasa"
+slugs = ["rasa"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Vectara"
+slugs = ["vectara"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Unstructured"
+slugs = ["unstructured", "unstructuredio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Contextual AI"
+slugs = ["contextualai", "contextual"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Anthropic"
+slugs = ["anthropic"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "xAI"
+slugs = ["xai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Databricks"
+slugs = ["databricks"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "CoreWeave"
+slugs = ["coreweave"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Distyl AI"
+slugs = ["distyl", "distylai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Ascertain"
+slugs = ["ascertain"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Maybern"
+slugs = ["maybern"]
+profiles = ["engineer"]
+[[candidates]]
+name = "LangChain"
+slugs = ["langchain"]
+profiles = ["engineer"]
+[[candidates]]
+name = "CrewAI"
+slugs = ["crewai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Composio"
+slugs = ["composio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "E2B"
+slugs = ["e2b"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Browserbase"
+slugs = ["browserbase"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Exa"
+slugs = ["exa", "exaai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Tavily"
+slugs = ["tavily"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Firecrawl"
+slugs = ["firecrawl", "mendable"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Lovable"
+slugs = ["lovable"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Bolt"
+slugs = ["stackblitz", "bolt"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Windsurf"
+slugs = ["windsurf"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Warp"
+slugs = ["warp", "warpdev"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Linear"
+slugs = ["linear"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Clay"
+slugs = ["clay", "clayrun"]
+profiles = ["engineer"]
+[[candidates]]
+name = "11x"
+slugs = ["11x"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rox"
+slugs = ["rox"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Glean AI"
+slugs = ["glean"]
+profiles = ["engineer"]
+
+# --- defense primes and government contractors. Most are on Workday, which needs a
+# tenant x site sweep: run `tools/probe_boards.py --workday`. `slugs` are tried as tenants there.
+# Known to be on an ATS with no JSON feed, so a sweep will not find them: Peraton and Noblis
+# (iCIMS), ManTech (Avature), MITRE (Phenom), Dominion Energy (SuccessFactors). Reaching those
+# means writing a scraper per vendor.
+[[candidates]]
+name = "Lockheed Martin"
+slugs = ["lockheedmartin", "lmco", "lockheed"]
+profiles = ["engineer"]
+[[candidates]]
+name = "RTX"
+slugs = ["raytheon", "rtx", "utc"]
+profiles = ["engineer"]
+[[candidates]]
+name = "SAIC"
+slugs = ["saic"]
+profiles = ["engineer"]
+[[candidates]]
+name = "L3Harris"
+slugs = ["l3harris", "l3t", "harris"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Amentum"
+slugs = ["amentum", "aecom"]
+profiles = ["engineer"]
+[[candidates]]
+name = "BAE Systems"
+slugs = ["baesystems", "bae"]
+profiles = ["engineer"]
+[[candidates]]
+name = "General Dynamics"
+slugs = ["gd", "generaldynamics", "gdms"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Draper"
+slugs = ["draper", "draperlab"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Johns Hopkins APL"
+slugs = ["jhuapl", "jhu"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Aerospace Corporation"
+slugs = ["aerospace", "aero"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Riverside Research"
+slugs = ["riversideresearch"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Systems Planning and Analysis"
+slugs = ["spa"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Markel"
+slugs = ["markel", "markelcorp"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "Altria"
+slugs = ["altria"]
+profiles = ["engineer", "analyst"]
+[[candidates]]
+name = "VCU Health"
+slugs = ["vcuhealth", "vcu"]
+profiles = ["analyst"]
+
+# --- Small regional autonomy, robotics, defense-tech and AI companies (seeded from Built In's regional
+# robotics, defense-startup and AI lists, the yc-oss YC directory filtered by state, and regional
+# reporting). `discover` probes each name on every platform.
+[[candidates]]
+name = "Castalia Systems"
+profiles = ["engineer"]
+[[candidates]]
+name = "ARInspect"
+profiles = ["engineer"]
+[[candidates]]
+name = "Service Robotics & Technologies"
+slugs = ["srtrobotics", "servicerobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "SVT Robotics"
+slugs = ["svtrobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Liquid Robotics"
+profiles = ["engineer"]
+[[candidates]]
+name = "Auterion"
+profiles = ["engineer"]
+[[candidates]]
+name = "Dedrone"
+profiles = ["engineer"]
+[[candidates]]
+name = "Shift5"
+profiles = ["engineer"]
+[[candidates]]
+name = "Sedaro"
+profiles = ["engineer"]
+[[candidates]]
+name = "Raft"
+slugs = ["raft", "teamraft", "goraft"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Guardian RF"
+slugs = ["guardianrf"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Capitol AI"
+slugs = ["capitolai", "capitol"]
+profiles = ["engineer"]
+[[candidates]]
+name = "CometRank"
+profiles = ["engineer"]
+[[candidates]]
+name = "Tactiq"
+profiles = ["engineer"]
+[[candidates]]
+name = "Torc Robotics"
+slugs = ["torcrobotics", "torc"]
+profiles = ["engineer"]
+[[candidates]]
+name = "AMP Robotics"
+slugs = ["amprobotics", "amp"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Sentrana"
+profiles = ["engineer"]
+[[candidates]]
+name = "Govini"
+profiles = ["engineer"]
+[[candidates]]
+name = "Rebellion Defense"
+slugs = ["rebelliondefense", "rebellion"]
+profiles = ["engineer"]
+
+# --- Short-loop, mid-pace, equity-shaped companies.
+# Tier 1 (investigate first)
+[[candidates]]
+name = "Slingshot Aerospace"
+slugs = ["slingshotaerospace", "slingshot"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Sardine"
+slugs = ["sardine", "sardineai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Path Robotics"
+slugs = ["pathrobotics", "path"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Moises"
+slugs = ["moises", "moisesai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "AudioShake"
+slugs = ["audioshake"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Instrumental"
+slugs = ["instrumental", "instrumentalinc"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Striveworks"
+slugs = ["striveworks"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Gecko Robotics"
+slugs = ["geckorobotics", "gecko"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Nominal"
+slugs = ["nominal", "nominalio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Danti"
+slugs = ["danti", "dantiai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Voxel"
+slugs = ["voxel", "voxelai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Vapi"
+slugs = ["vapi", "vapiai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Retell AI"
+slugs = ["retellai", "retell"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Reality Defender"
+slugs = ["realitydefender"]
+profiles = ["engineer"]
+# Tier 2 (one soft spot each)
+[[candidates]]
+name = "Unit21"
+slugs = ["unit21"]
+profiles = ["engineer"]
+[[candidates]]
+name = "SentiLink"
+slugs = ["sentilink"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Elementary"
+slugs = ["elementary", "elementaryrobotics", "elementaryml"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Modulate"
+slugs = ["modulate", "modulateai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Expedition Technology"
+slugs = ["expeditiontechnology", "exptech"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Defense Unicorns"
+slugs = ["defenseunicorns"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Machina Labs"
+slugs = ["machinalabs", "machina"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Krisp"
+slugs = ["krisp", "krispai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Ursa Space Systems"
+slugs = ["ursaspace", "ursaspacesystems"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Picogrid"
+slugs = ["picogrid"]
+profiles = ["engineer"]
+# Local and calm
+[[candidates]]
+name = "Elder Research"
+slugs = ["elderresearch"]
+profiles = ["engineer"]
+[[candidates]]
+name = "GA-CCRi"
+slugs = ["gaccri", "ga-ccri"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Dark Wolf Solutions"
+slugs = ["darkwolfsolutions", "darkwolf"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rise8"
+slugs = ["rise8"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Parry Labs"
+slugs = ["parrylabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "BlackSky"
+slugs = ["blacksky"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Spire Global"
+slugs = ["spire", "spireglobal"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Synthetaic"
+slugs = ["synthetaic"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Viam"
+slugs = ["viam", "viamrobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Doppel"
+slugs = ["doppel"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Carbon Robotics"
+slugs = ["carbonrobotics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Inworld AI"
+slugs = ["inworld", "inworldai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Splice"
+slugs = ["splice"]
+profiles = ["engineer"]
+[[candidates]]
+name = "LANDR"
+slugs = ["landr"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Pex"
+slugs = ["pex"]
+profiles = ["engineer"]
+# Long-list extras: audio, games/creator, defense signals, manufacturing CV, space, fincrime
+[[candidates]]
+name = "Native Instruments"
+slugs = ["nativeinstruments", "native-instruments", "izotope"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Audible Magic"
+slugs = ["audiblemagic"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Scenario"
+slugs = ["scenario", "scenariogg"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Layer AI"
+slugs = ["layerai", "layer"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Captions"
+slugs = ["captions"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hidden Level"
+slugs = ["hiddenlevel"]
+profiles = ["engineer"]
+[[candidates]]
+name = "EdgeRunner AI"
+slugs = ["edgerunner", "edgerunnerai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "CX2"
+slugs = ["cx2"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Landing AI"
+slugs = ["landingai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Nanotronics"
+slugs = ["nanotronics"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Formic"
+slugs = ["formic", "formictechnologies"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Vention"
+slugs = ["vention"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Bright Machines"
+slugs = ["brightmachines"]
+profiles = ["engineer"]
+[[candidates]]
+name = "LeoLabs"
+slugs = ["leolabs"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Kayhan Space"
+slugs = ["kayhanspace", "kayhan"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Muon Space"
+slugs = ["muonspace", "muon"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Loft Orbital"
+slugs = ["loftorbital"]
+profiles = ["engineer"]
+[[candidates]]
+name = "ICEYE"
+slugs = ["iceye"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Burro"
+slugs = ["burro", "burroai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Invisible AI"
+slugs = ["invisibleai", "invisible"]
+profiles = ["engineer"]
+[[candidates]]
+name = "DataVisor"
+slugs = ["datavisor"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hawk AI"
+slugs = ["hawkai", "hawk"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Hummingbird"
+slugs = ["hummingbird", "hummingbirdregtech"]
+profiles = ["engineer"]
+[[candidates]]
+name = "TRM Labs"
+slugs = ["trmlabs", "trm"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Chainalysis"
+slugs = ["chainalysis"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Riffusion"
+slugs = ["riffusion"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Dolby"
+slugs = ["dolby"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Sonos"
+slugs = ["sonos"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Rolls-Royce"
+slugs = ["rollsroyce", "rolls-royce"]
+profiles = ["engineer"]
+[[candidates]]
+name = "HII"
+slugs = ["hii", "huntingtoningalls"]
+profiles = ["engineer"]
+# Lower priority (intensity, hours, or PE-owned).
+[[candidates]]
+name = "Suno"
+slugs = ["suno"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Udio"
+slugs = ["udio"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Divergent"
+slugs = ["divergent", "divergent3d"]
+profiles = ["engineer"]
+[[candidates]]
+name = "SpaceX"
+slugs = ["spacex"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Blue Origin"
+slugs = ["blueorigin"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Maxar"
+slugs = ["maxar", "maxartechnologies"]
+profiles = ["engineer"]
+# --- more product and robotics companies
+[[candidates]]
+name = "Foxglove"
+slugs = ["foxglove", "foxglovedev"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Lithic"
+slugs = ["lithic"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Looq AI"
+slugs = ["looq", "looqai"]
+profiles = ["engineer"]
+[[candidates]]
+name = "micro1"
+slugs = ["micro1"]
+profiles = ["engineer"]
+[[candidates]]
+name = "Block"
+slugs = ["block", "squareup", "cashapp"]
+profiles = ["engineer"]

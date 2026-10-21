@@ -1,0 +1,44 @@
+# Example profile: a data scientist / analyst. Copy this folder to profiles/<your-name>/ and edit it.
+# Shows a second person sharing one install: boards tagged profiles = ["analyst"] are scored only for
+# profiles listing "analyst" in board_tags, and `enabled = false` parks a search without deleting anything.
+
+display_name = "Sam"
+board_tags = ["analyst"]
+# Parked so the examples cost nothing: a scan skips them entirely. Copy this folder to
+# profiles/<your-name>/, then set enabled = true there.
+enabled = false
+
+[search]
+title_tier1 = [
+  "data scientist", "data science", "statistician", "biostatistician", "biostatistics",
+  "quantitative analyst", "quantitative researcher",
+  "research scientist", "senior data analyst", "lead data analyst", "principal data analyst",
+  "analytics scientist", "statistical", "applied scientist", "decision scientist",
+]
+title_tier2 = [
+  "data analyst", "research analyst", "analytics", "evaluation", "epidemiolog", "health economics",
+  "public health", "research associate", "insights", "experimentation", "causal", "forecasting",
+  "pricing", "marketing analytics", "machine learning", "modeling", "modelling",
+]
+title_exclude = [
+  "intern", "new grad", "early career", "phd student", "recruit", "account executive", "account manager",
+  "marketing manager", "counsel", "tutor", "sales", "customer support", "designer", "hardware", "electrical",
+  "mechanical", "test engineer", "qa", "security engineer", "devops", "sre", "site reliability",
+  "frontend", "front-end", "front end", "ios", "android", "mobile", "product manager", "program manager",
+  "engineering manager", "director", "head of", "vp", "vice president", "chief", "controller", "accountant",
+  "legal", "technician", "writer", "editor", "coordinator", "financial analyst", "business analyst",
+  "data engineer", "software engineer", "machine learning engineer", "ml engineer", "solutions engineer",
+  "forward deployed", "annotator", "labeler",
+]
+require_title_match = true
+
+[location]
+# Only the home metro is a realistic drive, and a two-hour trip is not one this person wants for a
+# day on site either -- so daily and monthly are the same number.
+daily_miles = 40
+monthly_miles = 40
+radius_miles = 250
+commutable = [
+  "new albany", "westerville", "worthington", "hilliard", "grove city", "gahanna", "upper arlington",
+]
+

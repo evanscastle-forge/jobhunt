@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jobhunt</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #1c1f26; --muted: #6b7280; --line: #e5e7eb;
+    --accent: #2f6feb; --accent-ink: #fff; --good: #1a7f4b; --warn: #b45309; --bad: #b91c1c; --chip: #eef2ff;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1115; --panel: #171a21; --ink: #e6e8ee; --muted: #9aa3b2; --line: #2a2f3a; --accent: #6ea0ff; --accent-ink: #0b1220; --chip: #1f2740; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 10px 18px; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 5; }
+  header h1 { font-size: 17px; margin: 0 4px 0 0; }
+  header select#profile { font: inherit; font-weight: 600; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+  .meta { color: var(--muted); font-size: 12.5px; }
+  /* A scan takes minutes. Closing the log used to leave no sign at all that one was running, so
+     this lives in the header and is the thing that is always true. */
+  #scanbar { display: none; align-items: center; gap: 9px; font-size: 12.5px; color: var(--muted); }
+  body.scanning #scanbar { display: flex; }
+  #scanbar .track { width: 130px; height: 6px; border-radius: 4px; background: var(--chip); overflow: hidden; }
+  #scanbar .fill { height: 100%; width: 0; background: var(--accent); transition: width .4s ease; }
+  #scanbar .fill.spin { width: 35%; animation: slide 1.4s ease-in-out infinite; }
+  @keyframes slide { 0% { margin-left: -35%; } 100% { margin-left: 100%; } }
+  #scanbar .what { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #scanbar .linklike { font-size: 12.5px; }
+  button { font: inherit; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  button.small { padding: 3px 9px; font-size: 12.5px; }
+  button:disabled { opacity: .55; cursor: default; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px 18px 0; }
+  .tab { padding: 6px 12px; border-radius: 8px 8px 0 0; border: 1px solid transparent; border-bottom: none; cursor: pointer; color: var(--muted); user-select: none; }
+  .tab.on { background: var(--panel); border-color: var(--line); color: var(--ink); font-weight: 600; }
+  .tab .n { font-weight: 400; color: var(--muted); margin-left: 4px; }
+  .tabs #pager { white-space: nowrap; }
+  .tabs input[type=search] { margin-left: 10px; font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); width: 260px; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 0; }
+  main.open { grid-template-columns: minmax(0, 1fr) min(520px, 45vw); }
+  .tablewrap { overflow: auto; padding: 0 18px 40px; }
+  table { border-collapse: collapse; width: 100%; background: var(--panel); border: 1px solid var(--line); }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  td.act { white-space: nowrap; text-align: right; }
+  tr.row { cursor: pointer; }
+  tr.row:hover { background: color-mix(in srgb, var(--accent) 7%, var(--panel)); }
+  tr.row.sel { background: color-mix(in srgb, var(--accent) 14%, var(--panel)); }
+  tr.row.gone { opacity: .35; }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .s-hi { color: var(--good); } .s-mid { color: var(--warn); } .s-lo { color: var(--muted); }
+  .warnlink { color: var(--warn); cursor: pointer; text-decoration: underline dotted; }
+  table.parts { width: 100%; border-collapse: collapse; margin: 4px 0 10px; font-size: 12px; }
+  table.parts td { padding: 1px 6px 1px 0; }
+  table.parts td.num { text-align: right; font-variant-numeric: tabular-nums; width: 46px; }
+  table.parts td.strong { font-weight: 600; }
+  table.parts tr.pos td.strong { color: var(--good); } table.parts tr.neg td.strong { color: var(--warn); }
+  table.parts tr.zero { color: var(--muted); }
+  table.parts tr.total td { border-top: 1px solid var(--line); padding-top: 4px; }
+  .title { font-weight: 600; }
+  .sub { color: var(--muted); font-size: 12px; }
+  .tag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 6px; background: var(--chip); margin-right: 4px; white-space: nowrap; }
+  .tag.bad { background: color-mix(in srgb, var(--bad) 18%, var(--panel)); }
+  .tag.good { background: color-mix(in srgb, var(--good) 18%, var(--panel)); }
+  .tag.learn { background: color-mix(in srgb, var(--accent) 16%, var(--panel)); }
+  .tag.learn.neg { background: color-mix(in srgb, var(--warn) 18%, var(--panel)); }
+  aside { border-left: 1px solid var(--line); background: var(--panel); height: calc(100vh - 54px); position: sticky; top: 54px; overflow: auto; padding: 16px 18px; display: none; }
+  main.open aside { display: block; }
+  aside h2 { font-size: 16px; margin: 0 0 4px; }
+  aside h3 { font-size: 12.5px; color: var(--muted); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: .04em; }
+  aside .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  textarea { width: 100%; min-height: 70px; font: inherit; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); resize: vertical; }
+  pre { white-space: pre-wrap; word-break: break-word; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--bg); padding: 10px; border-radius: 8px; max-height: 260px; overflow: auto; }
+  .desc { white-space: pre-wrap; font-size: 13px; max-height: 360px; overflow: auto; padding-right: 6px; }
+  ul.reasons { margin: 0; padding-left: 18px; }
+  .log { position: fixed; right: 18px; bottom: 18px; width: min(460px, 90vw); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; box-shadow: 0 8px 30px rgba(0,0,0,.18); display: none; z-index: 9; }
+  .log.show { display: block; }
+  .log pre { max-height: 200px; }
+  .empty { padding: 40px; text-align: center; color: var(--muted); }
+  a { color: var(--accent); }
+  .close { float: right; }
+  input.comment { font: inherit; font-size: 12.5px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 220px; }
+  input.comment.saved { border-color: var(--good); }
+  .banner { background: color-mix(in srgb, var(--bad) 14%, var(--panel)); color: var(--ink); padding: 8px 18px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .banner code { font-family: ui-monospace, Menlo, monospace; }
+  #about { display: none; padding: 16px 18px 60px; max-width: 980px; }
+  body.about #about { display: block; } body.about #tabs, body.about #main { display: none; }
+  #about h2 { font-size: 16px; margin: 22px 0 8px; }
+  #about h2:first-child { margin-top: 4px; }
+  ul.facts { list-style: none; padding: 0; margin: 0; }
+  ul.facts li { display: flex; gap: 8px; align-items: flex-start; padding: 5px 0; border-bottom: 1px solid var(--line); }
+  ul.facts li .txt { cursor: text; }
+  ul.facts li .body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  ul.facts li .chk { font-size: 11.5px; }
+  ul.facts li.auto .txt { cursor: default; color: var(--muted); }
+  ul.facts li .txt.rule { cursor: default; }
+  ul.facts li.fixed .txt { color: var(--muted); }
+  ul.facts input.pts { width: 58px; font: inherit; padding: 1px 4px; margin: 0 2px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+  ul.facts li input { flex: 1; font: inherit; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--accent); background: var(--bg); color: var(--ink); }
+  .row2 { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  .row2 select { font: inherit; padding: 5px 6px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+  .row2 input[type=text] { flex: 1; min-width: 240px; font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+  table.rules td { padding: 4px 8px; }
+  table.rules input[type=number] { width: 64px; font: inherit; padding: 2px 4px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+  .pinned { color: var(--accent); font-size: 11px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 10px; }
+  .grid2 label, .row2 label { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--muted); }
+  .row2 label { flex-direction: row; align-items: center; gap: 6px; }
+  .grid2 textarea { min-height: 120px; font-size: 12.5px; }
+  .row2 input[type=number], .row2 select { font: inherit; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+  table.pts td:last-child { white-space: nowrap; color: var(--muted); }
+  .linklike { background: none; border: none; color: var(--accent); padding: 0; font-size: 12px; cursor: pointer; }
+  #answers { display: none; padding: 16px 18px 60px; max-width: 980px; }
+  body.answers #answers { display: block; } body.answers #tabs, body.answers #main, body.answers #about { display: none; }
+  body.about #answers { display: none; }
+  .badge { display: inline-block; min-width: 18px; padding: 0 5px; border-radius: 9px; background: var(--warn); color: #fff; font-size: 11px; font-weight: 700; margin-left: 5px; text-align: center; }
+  .st { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 6px; background: var(--chip); white-space: nowrap; }
+  .st.needs_you { background: color-mix(in srgb, var(--warn) 22%, var(--panel)); }
+  .st.submitted { background: color-mix(in srgb, var(--good) 22%, var(--panel)); }
+  .st.failed { background: color-mix(in srgb, var(--bad) 22%, var(--panel)); }
+  .st.running, .st.queued { background: color-mix(in srgb, var(--accent) 18%, var(--panel)); }
+  .st.rehearsed { background: color-mix(in srgb, var(--accent) 10%, var(--panel)); }
+  .qa { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin: 8px 0; background: var(--bg); }
+  .qa .q { font-weight: 600; }
+  .qa textarea { min-height: 56px; margin-top: 6px; background: var(--panel); }
+  .qa .opts { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .shots { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .shots a img { width: 140px; height: 90px; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+  .shots a { text-align: center; font-size: 11px; color: var(--muted); text-decoration: none; }
+  ul.steps { margin: 0; padding-left: 18px; font-size: 12px; color: var(--muted); max-height: 200px; overflow: auto; }
+  .entry { border-bottom: 1px solid var(--line); padding: 10px 0; }
+  .entry .q { font-weight: 600; }
+  .entry .sub { margin: 2px 0 4px; }
+  .entry textarea { min-height: 60px; }
+  .entry .row2 { margin-top: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>jobhunt</h1>
+  <select id="profile" title="profile"></select>
+  <button id="aboutbtn" class="small">About</button>
+  <button id="answersbtn" class="small">Answers</button>
+  <span style="flex:1"></span>
+  <button id="resetbtn" class="small" title="clear postings, Saved and apply runs; never your notes or answers">Reset</button>
+  <div class="meta" id="scanmeta">loading…</div>
+  <div id="scanbar"><div class="track"><div class="fill" id="scanfill"></div></div><span class="what" id="scanwhat"></span><button class="linklike" id="scanshow">log</button></div>
+  <button id="scanbtn" class="primary">Scan now</button>
+</header>
+<div id="stale" class="banner" style="display:none">The server is running older code than this page. Stop it with Ctrl+C and run <code>uv run python jobhunt.py serve</code> again.</div>
+
+<div class="tabs" id="tabs">
+  <input type="search" id="q" placeholder="filter by title / company / location…">
+  <span style="flex:1"></span>
+  <span class="meta" id="pager"></span>
+</div>
+
+<section id="about"></section>
+<section id="answers"></section>
+
+<main id="main">
+  <div class="tablewrap">
+    <table id="tbl">
+      <thead><tr id="thead"></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none"></div>
+  </div>
+  <aside id="detail"></aside>
+</main>
+
+<div class="log" id="scanlog"><button class="close" onclick="document.getElementById('scanlog').classList.remove('show')">×</button><strong>Scan</strong><pre id="scanlogtext"></pre></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const TABS = [['new', 'New'], ['saved', 'Saved'], ['runs', 'Needs you'], ['applied', 'In progress'], ['done', 'Done'], ['skip', 'Skipped']];
+const LIMIT = 50;
+const API_VERSION = 4;   // must match jobhunt/__init__.py; the server returns its own in /api/profiles
+let PROFILE = null, TAB = 'new', OFFSET = 0, LOWFIT = false, DATA = { jobs: [], counts: {}, total: 0 }, sel = null, qTimer = null;
+let RUNS = { runs: [], counts: {} }, selRun = null, runPoll = null;
+
+function withProfile(path) { return path + (path.includes('?') ? '&' : '?') + 'profile=' + encodeURIComponent(PROFILE || ''); }
+async function api(path, body) {
+  const url = /^\/api\/(scan|profiles)/.test(path) ? path : withProfile(path);
+  if (body && PROFILE) body.profile = PROFILE;
+  const r = await fetch(url, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {});
+  return r.json();
+}
+function esc(s) { return (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function money(n) { return n ? '$' + Math.round(n / 1000) + 'k' : ''; }
+function fmtDate(s) { if (!s) return ''; const d = new Date(s); return isNaN(d) ? '' : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); }
+// How often you could show up, which is what the band means. Every band gets an entry: `local` and
+// `non_us` used to fall through and render as raw snake_case on the row.
+function fitLabel(f) { return ({ remote: 'remote', remote_unspecified: 'remote?', daily: 'daily', monthly: 'monthly', quarterly: 'quarterly', relocate: 'would need to move', non_us: 'outside the US', unknown: '?' })[f] || f || ''; }
+function signed(n) { return (n > 0 ? '+' : '') + n; }
+// A grade, not a number: the relevance total has no units, so only its place in the distribution
+// means anything. A+/A/A- are the top of the crop, F the bottom, and no grade at all means the
+// model has not read the posting yet.
+function gradeClass(g) { return !g ? 's-lo' : (g[0] === 'A' ? 's-hi' : (g[0] === 'B' ? 's-mid' : 's-lo')); }
+function shown(j) { return j.grade || '—'; }
+
+// ---------------------------------------------------------------- profiles
+async function loadProfiles() {
+  const r = await api('/api/profiles');
+  $('#stale').style.display = (r.api_version || 0) < API_VERSION ? 'block' : 'none';
+  const profiles = r.profiles || [];
+  let want = null;
+  try { want = localStorage.getItem('jobhunt.profile'); } catch (e) {}
+  if (!profiles.some(p => p.name === want)) want = r.default || (profiles[0] && profiles[0].name);
+  PROFILE = want;
+  $('#profile').innerHTML = profiles.map(p => `<option value="${esc(p.name)}" ${p.name === PROFILE ? 'selected' : ''}>${esc(p.display_name || p.name)}</option>`).join('');
+  document.title = 'jobhunt · ' + ((profiles.find(p => p.name === PROFILE) || {}).display_name || '');
+  $('#aboutbtn').textContent = 'About ' + ((profiles.find(p => p.name === PROFILE) || {}).display_name || '');
+}
+
+// ---------------------------------------------------------------- list
+async function load() {
+  const q = $('#q').value.trim();
+  const jobsTab = TAB === 'runs' ? 'saved' : TAB;   // Needs you still needs the counts
+  [DATA, RUNS] = await Promise.all([
+    api(`/api/jobs?tab=${jobsTab}&limit=${LIMIT}&offset=${OFFSET}` + (LOWFIT && TAB === 'new' ? '&lowfit=1' : '') + (q ? '&q=' + encodeURIComponent(q) : '')),
+    api('/api/runs?state=' + (TAB === 'runs' ? 'all' : 'open')),
+  ]);
+  if (TAB !== 'runs' && !DATA.jobs.length && OFFSET > 0 && DATA.total > 0) {   // the page emptied out: step back
+    OFFSET = Math.max(0, Math.floor((DATA.total - 1) / LIMIT) * LIMIT);
+    return load();
+  }
+  const errs = ((DATA.last_summary || {}).errors) || {};
+  const names = Object.keys(errs);
+  // A board that 404s contributes nothing and used to be a single line in the scan log, so a dead
+  // board could go unnoticed for weeks. Say so on the page instead.
+  $('#scanmeta').innerHTML = (DATA.scanned_at ? `last scan ${esc(new Date(DATA.scanned_at).toLocaleString())}` : 'no scan yet — click Scan now')
+    + (names.length ? ` · <span class="warnlink" id="boarderr" title="${esc(names.map(n => n + ': ' + errs[n]).join('\n'))}">${names.length} board${names.length > 1 ? 's' : ''} failed to load</span>` : '');
+  const be = $('#boarderr');
+  if (be) be.onclick = () => alert('Boards that returned nothing on the last scan:\n\n' + names.map(n => `${n}\n    ${errs[n]}`).join('\n\n'));
+  renderTabs();
+  if (TAB === 'runs') renderRuns(); else render();
+  scheduleRunPoll();
+}
+// while something is queued or running, refresh the Needs-you count every few seconds
+function scheduleRunPoll() {
+  clearTimeout(runPoll);
+  const c = RUNS.counts || {};
+  if ((c.queued || 0) + (c.running || 0) > 0 && !document.body.classList.contains('about') && !document.body.classList.contains('answers'))
+    runPoll = setTimeout(load, 3000);
+}
+
+function renderTabs() {
+  const box = $('#tabs');
+  box.querySelectorAll('.tab').forEach(t => t.remove());
+  const input = $('#q');
+  for (const [key, label] of TABS) {
+    const n = key === 'runs' ? ((RUNS.counts || {}).open || 0) : ((DATA.counts || {})[key] || 0);
+    const t = document.createElement('span');
+    t.className = 'tab' + (key === TAB ? ' on' : '');
+    t.innerHTML = key === 'runs' && n ? `${label}<span class="badge">${n}</span>` : `${label}<span class="n">${n}</span>`;
+    t.onclick = () => { if (TAB !== key) { TAB = key; OFFSET = 0; LOWFIT = false; closeDetail(); load(); } };
+    box.insertBefore(t, input);
+  }
+  if (TAB === 'runs') {
+    const c = RUNS.counts || {};
+    $('#pager').innerHTML = `${c.open || 0} waiting · ${c.submitted || 0} submitted · ${c.failed || 0} failed · ${c.abandoned || 0} abandoned (up to ${RUNS.max_open} windows open at once)`;
+    return;
+  }
+  const total = DATA.total || 0, from = total ? OFFSET + 1 : 0, to = Math.min(OFFSET + LIMIT, total);
+  const lf = (DATA.counts || {}).hidden || 0, unjudged = (DATA.counts || {}).unjudged || 0;
+  const hiddenLabel = `${lf} hidden (under ${DATA.floor_label || DATA.min_grade})` + (unjudged ? `, ${unjudged} not yet rated` : '');
+  const lowfitLink = TAB === 'new' && (lf || LOWFIT) ? ` <button class="linklike" id="lowfit" title="their grade is under the floor, or the model has not read them yet; a scan rates whatever is still unrated">${LOWFIT ? 'back to the good ones' : hiddenLabel}</button>` : '';
+  const queueAll = TAB === 'saved' && total ? ` <button class="small" id="queueall" title="open an apply run for every saved posting that has none">Apply to all saved</button>` : '';
+  $('#pager').innerHTML = (total > LIMIT
+    ? `showing ${from}–${to} of ${total} <button class="small" id="prev" ${OFFSET ? '' : 'disabled'}>‹ Prev</button> <button class="small" id="next" ${to < total ? '' : 'disabled'}>Next ›</button>`
+    : (total ? `showing ${total}` : '')) + lowfitLink + queueAll;
+  const lfb = $('#lowfit'); if (lfb) lfb.onclick = () => { LOWFIT = !LOWFIT; OFFSET = 0; closeDetail(); load(); };
+  const qa = $('#queueall'); if (qa) qa.onclick = async () => { if (!confirm(`Open an apply run for every saved posting? Up to ${RUNS.max_open} browser windows will open; each pauses for your review.`)) return; const r = await api('/api/apply/all', { status: 'saved' }); alert(`queued ${r.queued.length}, skipped ${r.skipped.length} (already open or no resume)`); TAB = 'runs'; closeDetail(); load(); };
+  const prev = $('#prev'), next = $('#next');
+  if (prev) prev.onclick = () => { OFFSET = Math.max(0, OFFSET - LIMIT); closeDetail(); load(); };
+  if (next) next.onclick = () => { OFFSET += LIMIT; closeDetail(); load(); };
+}
+
+function render() {
+  const rows = DATA.jobs || [];
+  const isNew = TAB === 'new', isSaved = TAB === 'saved', isApplied = TAB === 'applied';
+  $('#thead').innerHTML = `<th>grade</th><th>title</th><th>company</th><th>frequency</th><th>location</th><th>pay</th><th>clearance</th><th>${isApplied ? 'applied' : 'posted'}</th><th></th>`;
+  const frag = document.createDocumentFragment();
+  for (const j of rows) {
+    const tr = document.createElement('tr');
+    tr.className = 'row' + (sel === j.id ? ' sel' : '');
+    tr.dataset.id = j.id;
+    const sc = gradeClass(j.grade);
+    const cl = j.clearance || {}, sal = j.salary || {}, st = j.state || {};
+    const extra = [j.source, j.seniority, (j.role || {}).overall_fit != null ? `read ${signed(j.role.overall_fit)}` : '',
+                   j.location_miles != null && j.location_miles > 0 ? `${j.location_miles} mi` : '',
+                   j.variant_count ? `+${j.variant_count} location${j.variant_count > 1 ? 's' : ''}` : '',
+                   j.active === false ? 'closed' : '', st.done_reason || ''].filter(Boolean).join(' · ');
+    let actions = '';
+    if (isNew) actions = `<button class="small" data-act="saved">Save</button> <button class="small" data-act="skip">Skip</button>`;
+    else if (isSaved) actions = `<button class="small primary" data-act="apply" title="open the form in a browser, fill it, pause for your review">Apply</button> <button class="small" data-act="applied" title="you already applied by hand">Applied</button> <button class="small" data-act="skip">Skip</button> <button class="small" data-act="undo">Undo</button>`;
+    else if (isApplied) actions = `<button class="small" data-act="done:no offer">No offer</button> <button class="small" data-act="done:withdrew">Withdrew</button> <button class="small" data-act="undo">Undo</button>`;
+    else if (TAB === 'skip') actions = `<input type="text" class="comment" placeholder="comment (optional)" value="${esc(st.notes || '')}" data-id="${esc(j.id)}"> <button class="small" data-act="undo">Undo</button>`;
+    else actions = `<button class="small" data-act="undo">Undo</button>`;
+    tr.innerHTML = `
+      <td class="score ${sc}">${shown(j)}</td>
+      <td><div class="title">${esc(j.title)}</div><div class="sub">${esc(extra)}</div></td>
+      <td>${esc(j.company)}</td>
+      <td><span class="tag ${j.location_fit === 'remote' || j.location_fit === 'daily' ? 'good' : ''}" title="how often you could be on site">${fitLabel(j.location_fit)}</span></td>
+      <td class="sub">${esc((j.location || '').slice(0, 60))}</td>
+      <td class="sub">${sal.max ? money(sal.min) + '–' + money(sal.max) : ''}</td>
+      <td>${cl.mentioned ? `<span class="tag ${cl.active_required ? 'bad' : ''}">${esc(cl.level)}${cl.active_required ? ' active' : cl.eligibility_ok ? ' eligible' : ''}</span>` : ''}</td>
+      <td class="sub">${fmtDate(isApplied ? st.applied_at : (j.posted_at || j.first_seen))}${!isApplied && j.recency && j.recency.level !== 'fresh' && j.recency.level !== 'unknown' ? ` · ${esc(j.recency.level)}` : ''}</td>
+      <td class="act">${actions}</td>`;
+    frag.appendChild(tr);
+  }
+  const tb = $('#rows'); tb.replaceChildren(frag);
+  const empty = $('#empty');
+  empty.style.display = rows.length ? 'none' : 'block';
+  empty.textContent = TAB === 'new' ? (LOWFIT ? 'Nothing hidden.' : 'Nothing new above the floor. Run a scan, or lower min_grade in config.toml.') : 'Nothing here.';
+}
+
+// one delegated handler for the whole table: row click opens detail, buttons act
+$('#rows').addEventListener('click', async e => {
+  const btn = e.target.closest('button[data-act]');
+  const tr = e.target.closest('tr.row');
+  if (!tr) return;
+  if (e.target.closest('input.comment')) return;
+  const id = tr.dataset.id;
+  if (!btn) { showDetail(id); return; }
+  e.stopPropagation();
+  const act = btn.dataset.act;
+  if (act === 'undo') { await undoStatus(id); return; }
+  if (act === 'apply') { await startApply(id); return; }
+  if (act.startsWith('run:')) { await runControl(id, act.slice(4)); return; }
+  const [status, reason] = act.split(':');
+  await setStatus(id, status, { done_reason: reason || '' });
+});
+
+// ---------------------------------------------------------------- Needs you (apply runs)
+function since(s) { if (!s) return ''; const m = Math.round((Date.now() - new Date(s)) / 60000); return m < 1 ? 'just now' : m < 60 ? m + ' min' : m < 1440 ? Math.round(m / 60) + ' h' : Math.round(m / 1440) + ' d'; }
+function stateTag(r) { return `<span class="st ${esc(r.state)}">${esc(r.state.replace('_', ' '))}</span>`; }
+function renderRuns() {
+  const rows = RUNS.runs || [];
+  $('#thead').innerHTML = `<th>state</th><th>posting</th><th>why it is waiting</th><th>filled</th><th>open questions</th><th>since</th><th></th>`;
+  const frag = document.createDocumentFragment();
+  for (const r of rows) {
+    const tr = document.createElement('tr');
+    tr.className = 'row' + (selRun === r.id ? ' sel' : '') + (['submitted', 'failed', 'abandoned', 'rehearsed'].includes(r.state) ? ' gone' : '');
+    tr.dataset.id = r.id;
+    let actions = '';
+    if (r.state === 'needs_you') actions = `<button class="small" data-act="run:submitted" title="you pressed Submit in the window">Mark submitted</button> <button class="small" data-act="run:abandon">Abandon</button>`;
+    else if (r.state === 'queued' || r.state === 'running') actions = `<button class="small" data-act="run:abandon">Abandon</button>`;
+    else actions = `<button class="small" data-act="run:retry" title="queue a fresh run for this posting">Retry</button>`;
+    tr.innerHTML = `
+      <td>${stateTag(r)}</td>
+      <td><div class="title">${esc(r.title || r.job_id)}</div><div class="sub">${esc(r.company || '')} · ${esc(r.ats || '')}</div></td>
+      <td class="sub">${esc(r.reason_text || (r.state === 'failed' ? r.error || 'failed' : r.state === 'submitted' ? r.confirmation || 'submitted' : ''))}</td>
+      <td class="sub">${r.filled || 0}</td>
+      <td>${r.required_open ? `<span class="badge">${r.required_open}</span>` : ''}${r.open_questions && !r.required_open ? `<span class="sub">${r.open_questions} optional</span>` : ''}</td>
+      <td class="sub">${since(r.updated_at)}</td>
+      <td class="act">${actions}</td>`;
+    frag.appendChild(tr);
+  }
+  $('#rows').replaceChildren(frag);
+  const empty = $('#empty');
+  empty.style.display = rows.length ? 'none' : 'block';
+  empty.textContent = 'No apply runs yet. Press Apply on a saved posting.';
+  if (selRun && !$('#detail').contains(document.activeElement)) showRun(selRun);   // never wipe an answer being typed
+}
+async function runControl(id, action) {
+  const r = await api('/api/run/control', { id, action });
+  if (r.error) alert(r.error);
+  await load();
+  if (selRun === id) showRun(id);
+}
+async function showRun(id) {
+  if (TAB !== 'runs') { TAB = 'runs'; closeDetail(); selRun = id; await load(); return; }
+  selRun = id; sel = null;
+  $('#rows').querySelectorAll('tr.row').forEach(r => r.classList.toggle('sel', r.dataset.id === id));
+  $('#main').classList.add('open');
+  const R = await api('/api/run?id=' + encodeURIComponent(id));
+  if (selRun !== id || !R || R.error) return;
+  const rep = R.report || {};
+  const open = (R.questions || []).filter(q => !q.answered && !q.skipped);
+  const byHand = (R.issues || []).filter(i => i.blocking && i.kind === 'blocked');
+  const fill = rep.fill || {};
+  const needs = open.filter(q => q.required).length + byHand.length;
+  const optional = open.length - open.filter(q => q.required).length;
+  const live = R.state === 'needs_you';
+  // one input per open question, shaped like the form's own field
+  const input = q => {
+    const opts = (q.options || []).filter(o => o && !/^(select|select one|select\.\.\.|--)$/i.test(o.trim()));
+    if (opts.length && ['select', 'combobox', 'radio'].includes(q.kind))
+      return `<select data-key="${esc(q.key)}"><option value="">choose…</option>${opts.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+    if (opts.length && q.kind === 'checkgroup')
+      return `<div data-key="${esc(q.key)}" data-multi="1">${opts.map(o => `<label class="sub" style="display:block"><input type="checkbox" value="${esc(o)}"> ${esc(o)}</label>`).join('')}</div>`;
+    return `<textarea data-key="${esc(q.key)}" placeholder="your answer">${esc(q.draft || '')}</textarea>`;
+  };
+  const shot = f => withProfile('/api/run/file?id=' + encodeURIComponent(R.id) + '&name=' + encodeURIComponent(f));
+  $('#detail').innerHTML = `
+    <button class="close" onclick="closeDetail()">×</button>
+    <h2>${esc(R.title || R.job_id)}</h2>
+    <div class="sub">${esc(R.company || '')} · <a href="${esc(R.url)}" target="_blank" rel="noopener">form ↗</a> · <button class="linklike" onclick="showJob('${esc(R.job_id)}')">posting</button></div>
+    <div style="margin-top:10px;font-size:15px">
+      ${fill.required ? `Filled <b>${fill.filled} of ${fill.required}</b> required` : esc(R.reason_text || R.state.replace('_', ' '))}
+      ${fill.required ? ` · ${needs ? `<b>${needs} need${needs === 1 ? 's' : ''} you</b>` : '<span class="tag good">nothing required needs you</span>'}${optional ? ` · ${optional} optional` : ''}` : ''}
+      · ${R.alive ? '<span class="tag good">window open</span>' : '<span class="tag">no window</span>'}
+    </div>
+    ${R.resume ? `<div class="sub" style="margin-top:4px">resume: <b>${esc(R.resume.name)}</b> · ${esc(R.resume.summary || (R.resume.identical ? 'identical in text to the master' : R.resume.edits + ' edits'))}
+      · <a href="${withProfile('/api/resume/file?kind=diff&name=' + encodeURIComponent(R.resume.name))}" target="_blank" rel="noopener">what changed</a>
+      · <a href="${withProfile('/api/resume/file?kind=pdf&name=' + encodeURIComponent(R.resume.name))}" target="_blank" rel="noopener">PDF</a>
+      ${R.resume.proposals ? ` · <button class="linklike" onclick="openAnswers()">${R.resume.proposals} proposal${R.resume.proposals === 1 ? '' : 's'} to review</button>` : ''}</div>` : ''}
+    ${live && R.reason && !['review_and_submit', 'questions', 'fix_fields'].includes(R.reason) ? `<div class="qa" style="margin-top:10px"><b>${esc(R.reason_text || R.reason)}</b>${(rep.blockers || [])[0] ? `<div class="sub">${esc(rep.blockers[0])}</div>` : ''}</div>` : ''}
+    ${R.state === 'submitted' ? `<div class="sub" style="margin-top:6px">submitted${R.confirmation ? ': ' + esc(R.confirmation) : ''}</div>` : ''}
+    ${R.error ? `<div class="sub" style="margin-top:6px">error: ${esc(R.error)}</div>` : ''}
+    ${needs || optional ? `<h3>Needs you</h3>
+      ${open.map(q => `<div class="qa"><div class="q">${esc(q.label)}${q.required ? '' : ' <span class="sub">(optional)</span>'}</div>
+        ${input(q)}${q.why ? `<div class="sub" style="margin-top:4px">${esc(String(q.why).slice(0, 220))}</div>` : ''}</div>`).join('')}
+      ${byHand.map(i => `<div class="qa"><div class="q">${esc(i.label)}</div><div class="sub">${esc(i.why)} · do this in the window</div></div>`).join('')}
+      ${open.length && live ? `<div class="row2"><button class="primary" id="sendAnswers">Send to form</button><span class="sub" id="sendMsg">Answers are remembered for future forms. You can also type them in the window instead; they are remembered when you submit.</span></div>` : ''}` : ''}
+    ${(rep.review || []).length ? `<details style="margin-top:10px"><summary>Typed for your review (${rep.review.length}): outlined in orange in the window</summary>
+      <ul class="reasons">${rep.review.map(r => `<li>${esc(r.label)} <span class="sub">← ${esc(String(r.value).slice(0, 200))}</span></li>`).join('')}</ul>
+      <div class="sub">Submitting without changing them remembers them; anything you change is remembered as changed.</div></details>` : ''}
+    <div class="actions">
+      ${live ? `<button onclick="runControl('${esc(R.id)}','submitted')" title="you pressed Submit in the window">Mark submitted</button><button onclick="if(confirm('Abandon this application?')) runControl('${esc(R.id)}','abandon')">Abandon</button>` : ''}
+      ${['submitted', 'failed', 'abandoned', 'rehearsed'].includes(R.state) ? `<button onclick="runControl('${esc(R.id)}','retry')">Start again</button>` : ''}
+    </div>
+    <details style="margin-top:14px"><summary class="sub">Details</summary>
+      ${R.reason_text ? `<div class="sub" style="margin-top:6px">${esc(R.reason_text)}</div>` : ''}
+      ${(rep.verify || []).length ? `<h3>did not stick</h3><ul class="reasons">${rep.verify.map(m => `<li>${esc(m.label)} <span class="sub">wanted ${esc(JSON.stringify(m.expected))}, page has ${esc(JSON.stringify(m.got))}</span></li>`).join('')}</ul>` : ''}
+      ${(rep.flagged || []).length ? `<h3>flagged</h3><ul class="reasons">${rep.flagged.map(([l, w]) => `<li>${esc(l)} <span class="sub">${esc(w)}</span></li>`).join('')}</ul>` : ''}
+      ${(rep.filled || []).length || (rep.uploaded || []).length ? `<h3>filled</h3><ul class="reasons">${(rep.filled || []).map(([l, v]) => `<li>${esc(l)} <span class="sub">← ${esc(String(v).slice(0, 80))}</span></li>`).join('')}${(rep.uploaded || []).map(l => `<li>${esc(l)} <span class="sub">← file</span></li>`).join('')}</ul>` : ''}
+      ${(R.screenshots || []).length ? `<h3>screenshots</h3><div class="shots">${R.screenshots.map(f => `<a href="${shot(f)}" target="_blank" rel="noopener"><img src="${shot(f)}" alt="${esc(f)}"><br>${esc(f.replace(/^\d+-|\.png$/g, ''))}</a>`).join('')}</div>` : ''}
+      <h3>steps</h3><ul class="steps">${(R.steps || []).map(s => `<li>${esc(new Date(s.at).toLocaleTimeString())} ${esc(s.msg)}</li>`).join('')}</ul>
+      <h3>process log</h3><pre>${esc(R.log || '(nothing yet)')}</pre>
+    </details>`;
+  const send = $('#sendAnswers');
+  if (send) send.onclick = async () => {
+    const answers = [];
+    $('#detail').querySelectorAll('[data-key]').forEach(el => {
+      const value = el.dataset.multi ? Array.from(el.querySelectorAll('input:checked')).map(c => c.value).join(' | ') : el.value;
+      if (value && value.trim()) answers.push({ key: el.dataset.key, value: value.trim() });
+    });
+    if (!answers.length) { $('#sendMsg').textContent = 'answer at least one first'; return; }
+    send.disabled = true;
+    const r = await api('/api/run/answers', { id, answers });
+    $('#sendMsg').textContent = r.error ? 'error: ' + r.error : r.resumed ? `sent ${r.saved}; filling them in now…` : `saved ${r.saved} for future forms (the window is gone)`;
+    setTimeout(() => showRun(id), r.resumed ? 6000 : 500);
+  };
+}
+async function showJob(id) { TAB = 'saved'; selRun = null; closeDetail(); await load(); showDetail(id); }
+
+// optional comment on a skipped row: saved to the posting's notes on blur / Enter
+$('#rows').addEventListener('change', async e => {
+  const inp = e.target.closest('input.comment'); if (!inp) return;
+  await api('/api/state', { id: inp.dataset.id, notes: inp.value });
+  inp.classList.add('saved'); setTimeout(() => inp.classList.remove('saved'), 1200);
+});
+
+async function setStatus(id, status, extra) {
+  // optimistic: the row leaves this tab immediately, then the tab refills from the server
+  const tr = $('#rows').querySelector(`tr[data-id="${CSS.escape(id)}"]`);
+  if (tr) tr.classList.add('gone');
+  if (sel === id) closeDetail();
+  await api('/api/state', { id, status, ...(extra || {}) });
+  await load();
+}
+
+async function undoStatus(id) {
+  const tr = $('#rows').querySelector(`tr[data-id="${CSS.escape(id)}"]`);
+  if (tr) tr.classList.add('gone');
+  if (sel === id) closeDetail();
+  await api('/api/state/undo', { id });
+  await load();
+}
+
+// ---------------------------------------------------------------- detail
+async function showDetail(id) {
+  if (TAB === 'runs') return showRun(id);
+  const prev = sel; sel = id; selRun = null;
+  $('#rows').querySelectorAll('tr.row').forEach(r => r.classList.toggle('sel', r.dataset.id === id));
+  $('#main').classList.add('open');
+  if (prev !== id) $('#detail').innerHTML = '<div class="sub">loading…</div>';
+  const [j, runs] = await Promise.all([api('/api/job?id=' + encodeURIComponent(id)), api('/api/runs?state=all&job=' + encodeURIComponent(id))]);
+  if (sel !== id || !j || j.error) return;
+  const latest = (runs.runs || [])[0];
+  const openRun = latest && !['submitted', 'failed', 'abandoned', 'rehearsed'].includes(latest.state) ? latest : null;
+  const tr_ = j.travel || {}, cl = j.clearance || {}, sal = j.salary || {}, st = j.state || {};
+  const ats = /greenhouse\.io/.test(j.apply_url) ? 'greenhouse' : /lever\.co/.test(j.apply_url) ? 'lever' : /ashbyhq/.test(j.apply_url) ? 'ashby' : /myworkdayjobs/.test(j.apply_url) ? 'workday' : /usajobs\.gov/.test(j.apply_url) ? 'usajobs' : 'other';
+  const canAuto = ['greenhouse', 'lever', 'ashby'].includes(ats);
+  const status = st.status || 'new';
+  $('#detail').innerHTML = `
+    <button class="close" onclick="closeDetail()">×</button>
+    <h2>${esc(j.title)}</h2>
+    <div class="sub">${esc(j.company)} · ${esc(j.location)} · <a href="${esc(j.url)}" target="_blank" rel="noopener">posting ↗</a></div>
+    <div style="margin-top:8px">
+      <span class="tag">${j.grade ? `grade ${j.grade}` : 'not rated yet'}</span><span class="tag" title="every attribute is measured -10..+10 and multiplied by how much you said you care. The total has no units, so what you see is its place in the distribution: A+ is two standard deviations above the mean of everything scored.">${j.relevance != null ? `relevance ${j.relevance}` : 'the model has not read this one'}</span><span class="tag">${fitLabel(j.location_fit)}</span>
+      ${tr_.level && tr_.level !== 'none' ? `<span class="tag">travel: ${esc(tr_.level)}${tr_.pct ? ' ' + tr_.pct + '%' : ''}</span>` : ''}
+      ${sal.max ? `<span class="tag">${money(sal.min)}–${money(sal.max)}</span>` : ''}
+      ${cl.mentioned ? `<span class="tag ${cl.active_required ? 'bad' : ''}">clearance: ${esc(cl.level)}${cl.active_required ? ' (active required)' : cl.eligibility_ok ? ' (eligibility)' : ''}</span>` : ''}
+      <span class="tag">${esc(ats)}</span><span class="tag">${esc(status)}${st.done_reason ? ': ' + esc(st.done_reason) : ''}</span>
+    </div>
+    <div class="actions">
+      ${openRun ? `<button class="primary" onclick="showRun('${esc(openRun.id)}')">Run ${esc(openRun.state.replace('_', ' '))}: open it</button>`
+                : `<button class="primary" onclick="startApply('${esc(j.id)}')" title="${canAuto ? 'opens the form in a browser, fills it from your profile and answer bank, then pauses for your review' : 'this form is not automated: a window opens for you to fill by hand, and the run tracks it'}">Apply${canAuto ? '' : ' (by hand)'}</button>`}
+      <button onclick="window.open('${esc(j.apply_url)}','_blank')">Apply page ↗</button>
+      ${status !== 'applied' && status !== 'done' ? `<button onclick="setStatus('${esc(j.id)}', 'applied')">Mark applied</button>` : ''}
+      ${status === 'new' ? `<button onclick="setStatus('${esc(j.id)}', 'saved')">Save</button>` : ''}
+      ${status !== 'new' ? `<button onclick="undoStatus('${esc(j.id)}')">Undo</button>` : ''}
+    </div>
+    ${latest ? `<div class="sub" style="margin-top:6px">last run: ${stateTag(latest)} ${esc(latest.reason_text || latest.confirmation || latest.error || '')} · <button class="linklike" onclick="showRun('${esc(latest.id)}')">details</button></div>` : ''}
+    ${(j.score_parts || []).length ? `<h3>what makes it relevant</h3>
+    <table class="parts"><tbody>${[...j.score_parts].sort((a, b) => ((b.w_eff ?? b.w) - (a.w_eff ?? a.w)) || a.dim.localeCompare(b.dim)).map(p => `<tr class="${p.points > 0 ? 'pos' : (p.points < 0 ? 'neg' : 'zero')}">
+      <td>${esc(p.dim.replace(/_/g, ' '))}</td><td class="num">${p.m}</td><td class="num" title="multiplier applied: the measure times this is the points">×${p.w_eff ?? p.w}</td>
+      <td class="num strong">${p.points > 0 ? '+' : ''}${p.points}</td>
+      <td class="sub">${esc(p.why || (p.m === 0 ? 'not mentioned' : ''))}</td></tr>`).join('')}
+      <tr class="total"><td>relevance</td><td></td><td></td><td class="num strong">${j.relevance}</td><td></td></tr>
+    </tbody></table>${j.role_why ? `<div class="sub">${esc(j.role_why)}</div>` : ''}` : ''}
+    ${(j.reasons || []).length ? `<h3>how it was measured</h3><ul class="reasons">${j.reasons.map(r => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
+    ${tr_.quote ? `<h3>travel</h3><div class="sub">“${esc(tr_.quote)}”</div>` : ''}
+    ${cl.quote ? `<h3>clearance</h3><div class="sub">“${esc(cl.quote)}”</div>` : ''}
+    ${(j.variants || []).length ? `<h3>same role, other locations</h3><ul class="reasons">${j.variants.map(v => `<li>${esc(v.location || '?')} <span class="sub">(${fitLabel(v.location_fit)}${v.grade ? ', grade ' + v.grade : ''})</span> <a href="${esc(v.url)}" target="_blank" rel="noopener">↗</a></li>`).join('')}</ul>` : ''}
+    <h3>notes</h3>
+    <textarea id="notes" placeholder="recruiter name, referral, what you sent…">${esc(st.notes || '')}</textarea>
+    <div class="sub" id="notesaved"></div>
+    <h3>description</h3>
+    <div class="desc">${esc(j.description || j.snippet || '')}</div>`;
+  $('#notes').onblur = async () => { await api('/api/state', { id: j.id, notes: $('#notes').value }); $('#notesaved').textContent = 'saved'; setTimeout(() => $('#notesaved').textContent = '', 1500); };
+}
+function closeDetail() { sel = null; selRun = null; $('#main').classList.remove('open'); $('#rows').querySelectorAll('tr.sel').forEach(r => r.classList.remove('sel')); }
+
+// ---------------------------------------------------------------- apply + scan
+async function startApply(id) {
+  const r = await api('/api/apply', { id });
+  if (!r.ok) { alert(r.error); return; }
+  TAB = 'runs'; closeDetail(); selRun = r.run_id; await load();
+}
+async function startScan() {
+  const r = await api('/api/scan', {});
+  $('#scanlog').classList.add('show'); $('#scanbtn').disabled = true;
+  if (!r.started) $('#scanlogtext').textContent = 'a scan is already running';
+  pollScan();
+}
+// The stages a scan walks, in order, so "fetch" can be shown as 2 of 8 rather than just "fetch".
+function drawScan(st) {
+  const on = !!st.running;
+  document.body.classList.toggle('scanning', on);
+  $('#scanbtn').disabled = on;
+  if (!on) return;
+  const p = st.progress || {};
+  const stages = st.stages || [];
+  const at = stages.indexOf(p.stage);
+  const label = st.mode && st.mode !== 'scan' ? st.mode : (p.stage || 'starting');
+  // Two kinds of progress: a stage that counts (fetch knows its board total) gets a real bar; one
+  // that does not gets a moving stripe, which says "working" without inventing a number.
+  const fill = $('#scanfill');
+  if (p.total > 0) {
+    fill.classList.remove('spin');
+    fill.style.width = Math.min(100, Math.round(100 * (p.done || 0) / p.total)) + '%';
+  } else {
+    fill.classList.add('spin'); fill.style.width = '';
+  }
+  const count = p.total > 0 ? ` ${p.done || 0}/${p.total}` : '';
+  const step = at >= 0 ? ` · step ${at + 1} of ${stages.length}` : '';
+  $('#scanwhat').textContent = `${label}${count}${step}`;
+}
+let sawScan = false;
+async function pollScan() {
+  const st = await api('/api/scan/status');
+  $('#scanlogtext').textContent = (st.log || []).join('\n') || 'starting…';
+  drawScan(st);
+  if (st.running) { sawScan = true; setTimeout(pollScan, 1200); return; }
+  $('#scanbtn').disabled = false;
+  if (sawScan) { sawScan = false; await load(); }   // a scan ended: the list has changed
+}
+
+// ---------------------------------------------------------------- about page
+let ABOUT = null;
+async function openAbout() {
+  document.body.classList.add('about'); closeDetail();
+  $('#about').innerHTML = '<div class="sub">loading…</div>';
+  ABOUT = await api('/api/about');
+  renderAbout();
+}
+function closeAbout() { document.body.classList.remove('about'); load(); }
+function renderAbout() {
+  const A = ABOUT; if (!A) return;
+  const factLi = (f, i) => `<li data-i="${i}" class="${f.auto ? 'auto' : ''}">
+      <span class="body"><span class="txt">${esc(f.text)}</span>${f.auto ? '<span class="chk sub">learned from your actions</span>' : ''}</span>
+      <button class="small" data-del="${i}" title="delete">×</button></li>`;
+  const stale = A.stale_ratings
+    ? `${A.stale_ratings} of ${A.rated} ratings were made under older facts. The next scan reads those postings again.`
+    : (A.rated ? `all ${A.rated} ratings were made under these facts` : 'nothing rated yet');
+  $('#about').innerHTML = `
+    <div class="row2" style="margin:0 0 8px"><button onclick="closeAbout()">‹ Back to jobs</button><span class="sub">${esc(A.about_path)}</span></div>
+    <h2>Facts about ${esc(A.display_name)}</h2>
+    <div class="sub">This is the only thing the model is told about you. It reads these sentences against each posting before rating it, and the drafting hooks read nothing else. Write them in the first person, as sentences rather than keywords: “I do not want to be on call” and “I have run an on-call rotation” mean opposite things. Click a fact to edit it. What each rated attribute is <i>worth</i> is set in <code>config.toml</code> under <code>[scoring]</code>.</div>
+    <div class="row2"><span class="sub" id="factstatus" title="facts ${esc(A.facts_sha || '')}">${esc(stale)}</span></div>
+    <ul class="facts" id="facts">${(A.facts || []).map(factLi).join('')}</ul>
+    <div class="row2"><input type="text" id="newfact" placeholder="add a fact…"><button class="primary" id="addfact">Add</button></div>
+    <h2>Add from a file</h2>
+    <div class="sub">PDF, DOCX, TXT or MD. The text is kept under notes/uploads/ for reference; only the facts it produces are used${A.llm_backend && A.llm_backend !== 'none' ? ' (digested by ' + esc(A.llm_backend) + ')' : ' (keyword heuristic, no LLM configured)'}.</div>
+    <div class="row2"><input type="file" id="upfile" accept=".pdf,.docx,.txt,.md"><button id="upbtn">Upload and digest</button><span class="sub" id="upstatus"></span></div>
+    ${(A.uploads || []).length ? `<div class="sub" style="margin-top:6px">uploaded: ${A.uploads.map(esc).join(', ')}</div>` : ''}
+    <div class="sub" style="margin-top:22px">Which titles are kept at all is a gate, not a weight, and is set in <code>search.toml</code>. A gate decides whether a posting exists; the weights only decide where it sits.</div>`;
+  const save = async facts => { ABOUT = await api('/api/about', { facts }); renderAbout(); };
+  const current = () => (ABOUT.facts || []).map(f => ({ text: f.text, auto: f.auto }));
+  $('#addfact').onclick = async () => { const t = $('#newfact').value.trim(); if (!t) return; ABOUT = await api('/api/about/add', { text: t }); renderAbout(); };
+  $('#newfact').onkeydown = e => { if (e.key === 'Enter') $('#addfact').click(); };
+  $('#facts').onclick = async e => {
+    const li = e.target.closest('li'); if (!li) return;
+    const i = +li.dataset.i;
+    const del = e.target.closest('button[data-del]');
+    if (del) { const f = current(); f.splice(i, 1); await save(f); return; }
+    const txt = e.target.closest('.txt'); if (!txt || li.classList.contains('auto')) return;
+    const inp = document.createElement('input'); inp.value = ABOUT.facts[i].text;
+    txt.replaceWith(inp); inp.focus();
+    const commit = async () => { const v = inp.value.trim(); const f = current(); if (v) f[i].text = v; else f.splice(i, 1); await save(f); };
+    inp.onblur = commit; inp.onkeydown = ev => { if (ev.key === 'Enter') inp.blur(); if (ev.key === 'Escape') { inp.onblur = null; renderAbout(); } };
+  };
+  $('#upbtn').onclick = async () => {
+    const f = $('#upfile').files[0]; if (!f) { $('#upstatus').textContent = 'choose a file first'; return; }
+    $('#upstatus').textContent = 'reading…';
+    const buf = await f.arrayBuffer(); let bin = ''; const bytes = new Uint8Array(buf); for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    $('#upstatus').textContent = 'digesting… (an LLM call can take a minute)';
+    const r = await api('/api/about/upload', { name: f.name, content_b64: btoa(bin) });
+    if (r.error) { $('#upstatus').textContent = 'error: ' + r.error; return; }
+    ABOUT = r; renderAbout(); $('#upstatus').textContent = `added ${r.result.added.length} fact(s) from ${f.name}${r.result.used_llm ? '' : ' (heuristic)'}`;
+  };
+}
+$('#aboutbtn').onclick = () => { document.body.classList.remove('answers'); document.body.classList.contains('about') ? closeAbout() : openAbout(); };
+
+// ---------------------------------------------------------------- answers page (the answer bank)
+let ANS = null;
+async function openAnswers() {
+  document.body.classList.remove('about'); document.body.classList.add('answers'); closeDetail();
+  $('#answers').innerHTML = '<div class="sub">loading…</div>';
+  [ANS, TERMS] = await Promise.all([api('/api/answers'), api('/api/resume/terms')]);
+  renderAnswers();
+}
+let TERMS = null;
+function renderTerms() {
+  const T = TERMS; if (!T || (!T.has_master && !(T.entries || []).length)) return '';
+  const kindLabel = { synonyms: 'synonym group', skill: 'skill', headline: 'headline' };
+  const members = e => e.kind === 'synonyms' ? e.terms.join(' · ') : e.kind === 'skill' ? (e.aliases.length ? 'also: ' + e.aliases.join(' · ') : '') : 'when the title says: ' + e.matches.join(' · ');
+  const card = e => `<div class="entry" data-tkey="${esc(e.key)}">
+      <div class="q"><span class="sub">${kindLabel[e.kind] || esc(e.kind)}</span> ${esc(e.name)} <span class="st ${e.approved ? 'submitted' : 'needs_you'}">${e.approved ? 'approved' : 'pending'}</span></div>
+      ${members(e) ? `<div class="sub">${esc(members(e))}</div>` : ''}
+      ${e.by ? `<div class="sub"><b>proposed by the tool</b>${e.source ? ' from ' + esc(e.source) : ''}${e.note ? ' · ' + esc(e.note) : ''}</div>` : ''}
+      <div class="row2">${e.approved ? '<button class="small" data-do="pending">Back to pending</button>' : '<button class="small primary" data-do="approve">Approve</button>'}<button class="small" data-do="delete">Delete</button><span class="sub" data-saved></span></div>
+    </div>`;
+  const pending = (T.entries || []).filter(e => !e.approved), approved = (T.entries || []).filter(e => e.approved);
+  return `<h2>Resume terms (${pending.length} pending)</h2>
+    <div class="sub">What a per-posting resume variant may change, and nothing else: a phrase swapped for the posting's word for the same thing (synonym group), the SKILLS line (your approved skills, the posting's first), and a headline under your name (a title you have held). The tool proposes; only what you approve is ever used. <span class="sub">${esc(T.terms_path)}</span></div>
+    ${pending.length ? pending.map(card).join('') : '<div class="sub">nothing waiting</div>'}
+    ${approved.length ? `<details style="margin-top:6px"><summary>Approved (${approved.length})</summary>${approved.map(card).join('')}</details>` : ''}
+    <div class="row2" style="margin-top:6px"><select id="tkind"><option value="skill">skill</option><option value="synonyms">synonym group (a | b)</option><option value="headline">headline</option></select><input type="text" id="tname" placeholder="Python · or · agentic system | AI agent · or · Senior Machine Learning Engineer"><button class="small primary" id="taddbtn">Add as approved</button></div>`;
+}
+function wireTerms() {
+  $('#answers').querySelectorAll('.entry[data-tkey]').forEach(box => {
+    const key = box.dataset.tkey;
+    box.querySelectorAll('button[data-do]').forEach(b => b.onclick = async () => {
+      let r;
+      if (b.dataset.do === 'delete') { if (!confirm('Delete this entry from the resume term bank?')) return; r = await api('/api/resume/terms/delete', { key }); }
+      else r = await api('/api/resume/terms/set', { key, status: b.dataset.do === 'approve' ? 'approved' : 'pending' });
+      if (r.error) { box.querySelector('[data-saved]').textContent = 'error: ' + r.error; return; }
+      TERMS = r; renderAnswers();
+    });
+  });
+  const add = $('#taddbtn');
+  if (add) add.onclick = async () => {
+    const kind = $('#tkind').value, name = $('#tname').value.trim();
+    if (!name) return;
+    const r = await api('/api/resume/terms/add', { kind, name, terms: kind === 'synonyms' ? name : undefined });
+    if (r.error) { alert(r.error); return; }
+    TERMS = r; renderAnswers();
+  };
+}
+function closeAnswers() { document.body.classList.remove('answers'); load(); }
+function renderAnswers() {
+  const A = ANS; if (!A) return;
+  const c = A.counts || {};
+  $('#answersbtn').innerHTML = 'Answers';   // questions are answered on the run that asks them; this page edits the bank
+  const entry = e => `<div class="entry" data-key="${esc(e.key)}">
+      <div class="q">${esc(e.question)} <span class="st ${e.approved ? 'submitted' : 'needs_you'}">${e.approved ? 'approved' : 'pending'}</span>${e.required ? ' <span class="sub">required on a form</span>' : ''}</div>
+      <div class="sub">${esc(e.kind)}${e.options && e.options.length ? ' · options: ' + e.options.map(esc).join(' · ') : ''}${e.seen ? ` · seen ${e.seen}× (last ${esc(e.last_job || '')} ${esc(e.last_seen || '')})` : ''}</div>
+      ${e.by ? `<div class="sub"><b>${e.by === 'applicant_agent' ? (e.answer ? 'proposed by the applicant agent' : 'the applicant agent declined') : esc(e.by)}</b>${e.note ? ' · ' + esc(e.note) : ''}</div>` : ''}
+      <textarea placeholder="your answer, verbatim; {company} and {title} are substituted">${esc(e.answer || '')}</textarea>
+      <div class="row2"><button class="small primary" data-do="approve">Approve</button><button class="small" data-do="save">Save as pending</button><button class="small" data-do="delete">Delete</button><span class="sub" data-saved></span></div>
+    </div>`;
+  const pending = (A.entries || []).filter(e => !e.approved), approved = (A.entries || []).filter(e => e.approved);
+  $('#answers').innerHTML = `
+    <div class="row2" style="margin:0 0 8px"><button onclick="closeAnswers()">‹ Back to jobs</button><span class="sub">${esc(A.answers_path)}</span></div>
+    ${renderTerms()}
+    <h2>Application answers for ${esc(A.display_name)}</h2>
+    <div class="sub">Every question a form asked that profile.toml could not answer lands here. The apply assistant only ever types an <b>approved</b> answer, verbatim ({company} and {title} substituted); a pending one makes the run pause. Write in your own words.</div>
+    <h2>Pending (${pending.length})</h2>
+    ${pending.length ? pending.map(entry).join('') : '<div class="sub">nothing waiting</div>'}
+    <h2>Approved (${approved.length})</h2>
+    ${approved.map(entry).join('')}
+    <h2>Add one ahead of time</h2>
+    <div class="sub">Type the question as a form would ask it (use {company} where the company name goes).</div>
+    <div class="row2"><input type="text" id="newq" placeholder="question…"></div>
+    <div class="row2"><textarea id="newa" placeholder="answer…"></textarea></div>
+    <div class="row2"><button class="primary" id="addq">Add as approved</button></div>`;
+  $('#answers').querySelectorAll('.entry').forEach(box => {
+    const key = box.dataset.key;
+    box.querySelectorAll('button[data-do]').forEach(b => b.onclick = async () => {
+      const answer = box.querySelector('textarea').value;
+      let r;
+      if (b.dataset.do === 'delete') { if (!confirm('Delete this question from the bank?')) return; r = await api('/api/answers/delete', { key }); }
+      else if (b.dataset.do === 'approve') { if (!answer.trim()) { box.querySelector('[data-saved]').textContent = 'write an answer first'; return; } r = await api('/api/answers/set', { key, answer, status: 'approved' }); }
+      else r = await api('/api/answers/set', { key, answer, status: 'pending' });
+      if (r.error) { box.querySelector('[data-saved]').textContent = 'error: ' + r.error; return; }
+      ANS = r; renderAnswers();
+    });
+  });
+  wireTerms();
+  $('#addq').onclick = async () => {
+    const question = $('#newq').value.trim(), answer = $('#newa').value.trim();
+    if (!question || !answer) return;
+    const r = await api('/api/answers/set', { question, answer, status: 'approved' });
+    if (r.error) { alert(r.error); return; }
+    ANS = r; renderAnswers();
+  };
+}
+$('#answersbtn').onclick = () => document.body.classList.contains('answers') ? closeAnswers() : openAnswers();
+async function refreshAnswersBadge() {}
+$('#resetbtn').onclick = async () => {
+  const ok = confirm('Reset clears:\n' +
+    '  • postings you never decided on (the next scan brings back the live ones)\n' +
+    '  • the Saved tab (kept as history, so learning still uses it)\n' +
+    '  • apply runs (open ones are closed; folders are archived)\n\n' +
+    'It never touches your About facts, answers, voice, profile, resume (master, terms, variants) or logins, or anything you applied to or skipped.\n\nReset now?');
+  if (!ok) return;
+  const r = await api('/api/reset', {});
+  alert(r.error ? 'Reset failed: ' + r.error
+    : `Reset: ${r.postings_cleared} posting(s) cleared, ${r.saved_archived} saved archived, ${r.moved || 0} run folder(s) archived. Press Scan now, or wait for the 2 am scan.`);
+  selRun = null; closeDetail(); await load();
+};
+
+$('#scanbtn').onclick = startScan;
+$('#scanshow').onclick = () => $('#scanlog').classList.add('show');
+$('#profile').onchange = async e => { PROFILE = e.target.value; try { localStorage.setItem('jobhunt.profile', PROFILE); } catch (err) {} closeDetail(); document.title = 'jobhunt · ' + e.target.selectedOptions[0].textContent; $('#aboutbtn').textContent = 'About ' + e.target.selectedOptions[0].textContent; TAB = 'new'; OFFSET = 0; refreshAnswersBadge(); if (document.body.classList.contains('about')) openAbout(); else if (document.body.classList.contains('answers')) openAnswers(); else await load(); };
+$('#q').oninput = () => { clearTimeout(qTimer); OFFSET = 0; qTimer = setTimeout(load, 250); };
+// A scan started in another tab, or before a reload, is still a scan. Ask once on load so the
+// header picks it up rather than the page looking idle while the server is ten minutes deep.
+loadProfiles().then(() => { load(); refreshAnswersBadge(); pollScan(); });
+</script>
+</body>
+</html>

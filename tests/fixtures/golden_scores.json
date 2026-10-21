@@ -1,0 +1,138 @@
+{
+ "analyst": {
+  "greenhouse:ex:6": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "A-",
+   "location_fit": "daily",
+   "location_miles": 0,
+   "recency": "mid",
+   "relevance": -10.2,
+   "seniority": "senior",
+   "title_tier": 1
+  },
+  "usajobs:800001": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "C",
+   "location_fit": "remote",
+   "location_miles": null,
+   "recency": "fresh",
+   "relevance": -146.8,
+   "seniority": null,
+   "title_tier": 1
+  }
+ },
+ "engineer": {
+  "ashby:ex:u1": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "B-",
+   "location_fit": "remote",
+   "location_miles": null,
+   "recency": "mid",
+   "relevance": -95.6,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "ashby:ex:u3": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "A",
+   "location_fit": "remote",
+   "location_miles": null,
+   "recency": "fresh",
+   "relevance": 264.0,
+   "seniority": null,
+   "title_tier": 2
+  },
+  "greenhouse:ex:1": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "A-",
+   "location_fit": "remote",
+   "location_miles": null,
+   "recency": "stale",
+   "relevance": 128.0,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "greenhouse:ex:2": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "C-",
+   "location_fit": "quarterly",
+   "location_miles": 326,
+   "recency": "mid",
+   "relevance": -285.2,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "greenhouse:ex:5": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "C+",
+   "location_fit": "quarterly",
+   "location_miles": 336,
+   "recency": "mid",
+   "relevance": -114.2,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "greenhouse:ex:7": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": "greenhouse:ex:1",
+   "grade": "C-",
+   "location_fit": "quarterly",
+   "location_miles": 479,
+   "recency": "mid",
+   "relevance": -261.2,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "greenhouse:ex:8": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "C",
+   "location_fit": "quarterly",
+   "location_miles": 415,
+   "recency": "mid",
+   "relevance": -235.2,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "hn:111:222": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "B+",
+   "location_fit": "remote",
+   "location_miles": null,
+   "recency": "mid",
+   "relevance": 62.8,
+   "seniority": null,
+   "title_tier": 1
+  },
+  "lever:ex:abc": {
+   "active": true,
+   "drop_reason": null,
+   "duplicate_of": null,
+   "grade": "C-",
+   "location_fit": "quarterly",
+   "location_miles": 326,
+   "recency": "stale",
+   "relevance": -270.0,
+   "seniority": null,
+   "title_tier": 1
+  }
+ }
+}
