@@ -68,7 +68,7 @@ non_us = [
   # The rest of the world, pruned of every name an American town also carries. A US state code
   # cannot be used to rescue those towns: "Munich, DE" and "Toronto, CA" look exactly like a US
   # state too, and letting a code override a country name is how Seattle once counted as
-  # commutable from Virginia. So the list simply leaves the collisions out.
+  # commutable from home. So the list simply leaves the collisions out.
   #
   # DELIBERATELY ABSENT, because a US town shares the name: georgia (the state), lebanon (NH),
   # jordan (MN), panama (City, FL), cuba (MO), malta (NY), trinidad (CO), monaco (PA), angola (IN),
