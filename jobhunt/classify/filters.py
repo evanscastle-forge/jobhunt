@@ -170,7 +170,7 @@ class Matcher:
     def _coarse(seg: str) -> bool:
         """Is this segment only a state or a country, with no place inside it?
 
-        "Virginia" resolves to the state centroid, which can be a few dozen miles from a Virginia origin and band it as a
+        "Virginia" resolves to the state centroid, which can be a few dozen miles from an origin in that state and band it as a
         daily commute. It is not an address: it means somewhere in Virginia. A coarse match must
         never claim to be near, so callers floor it at the day-trip band."""
         low = re.sub(r"[^a-z ]+", " ", (seg or "").lower())
@@ -236,7 +236,7 @@ class Matcher:
         best, miles = min(pairs, key=lambda p: order.index(p[0]))
         # A posting whose only named places are foreign is foreign, even when it also says "remote".
         # "Brampton, Canada; Flexible / Remote" is a Canadian office advertising flexibility, not a
-        # job open from Virginia. Only an actually US-anchored segment rescues it.
+        # job open from home. Only an actually US-anchored segment rescues it.
         us_anchored = ("daily", "monthly", "quarterly", "relocate", "remote")
         if any(f == "non_us" for f, _m in pairs) and not any(f in us_anchored for f, _m in pairs):
             best, miles = "non_us", None

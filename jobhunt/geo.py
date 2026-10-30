@@ -75,7 +75,7 @@ _SPLIT = re.compile(r"\s*[;|/,]\s*|\s+\bor\b\s+|\s*[-–—]\s+")
 
 # A city named without its state has to earn it. The table carries every CDP in the country, so
 # without a floor "Remote-Friendly" cleans down to "Friendly" and matches a 94-person town outside
-# Washington -- which is exactly how 48 Bay Area postings once looked commutable from Virginia.
+# Washington -- which is exactly how 48 Bay Area postings once looked commutable from home.
 MIN_BARE_POP = 50_000
 
 
