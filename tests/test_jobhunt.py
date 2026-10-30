@@ -672,7 +672,7 @@ class FiltersTest(unittest.TestCase):
         # read like "Remote (Any State); 507 RESTON VA", and calling those a daily commute is false
         self.assertEqual(self.m.location_fit(self.job(location="Columbus, OH", remote_signal="remote"))[0], "remote")
         self.assertEqual(self.m.location_fit(self.job(location="Washington, DC", remote_signal="remote"))[0], "remote")
-        # distance, not substrings: the old city vocabulary called these commutable from Virginia
+        # distance, not substrings: the old city vocabulary called these commutable from home
         self.assertEqual(self.m.location_fit(self.job(location="Seattle, Washington"))[0], "relocate")
         self.assertEqual(self.m.location_fit(self.job(location="Charleston, West Virginia"))[0], "quarterly")
         self.assertEqual(self.m.location_fit(self.job(location="Arlington, TX"))[0], "relocate")
